@@ -1,0 +1,394 @@
+/* ============================================================
+   ARQUIVO MORTO v8.0 — SISTEMA DE TEORIAS
+   ============================================================ */
+
+.teorias-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.3s;
+  backdrop-filter: blur(6px);
+}
+
+.teorias-box {
+  max-width: 1100px;
+  width: 100%;
+  max-height: 92vh;
+  background: linear-gradient(135deg, #1a1410 0%, #0a0806 100%);
+  border: 3px solid var(--dourado, #b8912e);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.9),
+    0 0 80px rgba(184,145,46,0.4);
+  position: relative;
+  animation: zoomIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.teorias-header {
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 2px dashed rgba(184,145,46,0.3);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.teorias-header h2 {
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  color: var(--dourado, #b8912e);
+  font-size: 1.5rem;
+  letter-spacing: 4px;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 0 20px rgba(184,145,46,0.6);
+}
+
+.teorias-header p {
+  color: rgba(232,220,196,0.7);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.teorias-fechar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: 2px solid rgba(194,59,59,0.5);
+  color: var(--sangue-claro, #c23b3b);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.teorias-fechar:hover {
+  background: var(--sangue, #8b1a1a);
+  color: var(--papel, #e8dcc4);
+  transform: rotate(90deg);
+}
+
+.teorias-contador {
+  text-align: center;
+  color: var(--papel, #e8dcc4);
+  font-family: var(--font-tech, monospace);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.teorias-contador-num {
+  color: var(--dourado, #b8912e);
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(184,145,46,0.6);
+}
+
+.teorias-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+@media (max-width: 800px) {
+  .teorias-body { grid-template-columns: 1fr; }
+}
+
+.teorias-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.teorias-coluna-titulo {
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  color: var(--dourado, #b8912e);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(184,145,46,0.3);
+  margin-bottom: 0.3rem;
+}
+
+.teorias-evidencia-lista,
+.teorias-suspeito-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 0.4rem;
+}
+
+.teoria-evidencia {
+  padding: 0.8rem 0.9rem;
+  background: linear-gradient(135deg, #f4ead4 0%, #e8dcc4 100%);
+  border-left: 4px solid var(--sangue, #8b1a1a);
+  color: #2a2018;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  border-radius: 4px;
+  cursor: grab;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+
+.teoria-evidencia:hover {
+  transform: translateX(6px);
+  border-left-color: var(--dourado, #b8912e);
+  box-shadow: 0 5px 20px rgba(184,145,46,0.3);
+}
+
+.teoria-evidencia.arrastando {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.teoria-evidencia.selecionada {
+  border-left-color: #ffcc66;
+  background: linear-gradient(135deg, #fff8e0 0%, #f4ead4 100%);
+  box-shadow: 0 0 20px rgba(255,204,102,0.6);
+  transform: scale(1.02);
+}
+
+.teoria-evidencia.conectada {
+  background: linear-gradient(135deg, #e0f0e0 0%, #d0e8d0 100%);
+  border-left-color: var(--verde, #2d5a2d);
+  opacity: 0.75;
+}
+
+.teoria-icone { font-size: 1rem; flex-shrink: 0; }
+.teoria-texto { flex: 1; }
+
+.teoria-conectada-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  background: var(--verde, #2d5a2d);
+  color: white;
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.teoria-suspeito {
+  padding: 0.8rem;
+  background: linear-gradient(135deg, rgba(139,26,26,0.2), rgba(139,26,26,0.08));
+  border: 2px solid rgba(139,26,26,0.4);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.teoria-suspeito:hover,
+.teoria-suspeito.drag-over {
+  border-color: var(--dourado, #b8912e);
+  background: linear-gradient(135deg, rgba(184,145,46,0.2), rgba(139,26,26,0.15));
+  transform: translateX(4px);
+  box-shadow: 0 0 25px rgba(184,145,46,0.4);
+}
+
+.teoria-suspeito.destaque {
+  border-color: var(--dourado, #b8912e);
+  box-shadow: 0 0 20px rgba(184,145,46,0.4);
+}
+
+.teoria-suspeito-avatar {
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--sangue, #8b1a1a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  background: radial-gradient(circle, rgba(139,26,26,0.3), rgba(0,0,0,0.6));
+}
+
+.teoria-suspeito-nome {
+  flex: 1;
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  color: var(--papel, #e8dcc4);
+  font-size: 0.9rem;
+}
+
+.teoria-suspeito-badge {
+  background: var(--sangue, #8b1a1a);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-tech, monospace);
+}
+
+.teoria-suspeito.destaque .teoria-suspeito-badge {
+  background: var(--dourado, #b8912e);
+  color: var(--tinta, #1a1410);
+}
+
+.teorias-rodape {
+  padding-top: 1rem;
+  border-top: 2px dashed rgba(184,145,46,0.3);
+  margin-top: 1rem;
+}
+
+.teorias-dica {
+  text-align: center;
+  color: rgba(232,220,196,0.6);
+  font-size: 0.75rem;
+  font-style: italic;
+  margin-bottom: 0.8rem;
+}
+
+.teorias-acoes {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.teorias-btn {
+  padding: 0.7rem 1.3rem;
+  border: none;
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.teorias-btn.primario {
+  background: linear-gradient(135deg, var(--dourado, #b8912e), #d4a83a);
+  color: var(--tinta, #1a1410);
+  font-weight: bold;
+}
+
+.teorias-btn.primario:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(184,145,46,0.6);
+  letter-spacing: 4px;
+}
+
+.teorias-btn.secundario {
+  background: transparent;
+  border: 2px solid var(--sangue, #8b1a1a);
+  color: var(--papel, #e8dcc4);
+}
+
+.teorias-btn.secundario:hover {
+  background: var(--sangue, #8b1a1a);
+  letter-spacing: 4px;
+}
+
+.teorias-btn.cancelar {
+  background: transparent;
+  border: 2px solid #666;
+  color: #aaa;
+}
+
+.teorias-btn.cancelar:hover {
+  background: #333;
+  color: white;
+}
+
+.teoria-resultado-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s;
+}
+
+.teoria-resultado-box {
+  max-width: 400px;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1a1410, #0a0806);
+  border-radius: 16px;
+  text-align: center;
+  animation: zoomIn 0.4s;
+}
+
+.teoria-resultado-box.vitoria {
+  border: 3px solid var(--verde, #2d5a2d);
+  box-shadow: 0 0 80px rgba(45,90,45,0.6);
+}
+
+.teoria-resultado-box.derrota {
+  border: 3px solid var(--sangue, #8b1a1a);
+  box-shadow: 0 0 80px rgba(139,26,26,0.6);
+}
+
+.teoria-resultado-icone {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+  animation: pulsarIcone 1s infinite;
+}
+
+.teoria-resultado-box h3 {
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  font-size: 1.3rem;
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+}
+
+.teoria-resultado-box.vitoria h3 { color: #9fdf9f; }
+.teoria-resultado-box.derrota h3 { color: var(--sangue-claro, #c23b3b); }
+
+.teoria-resultado-box p {
+  color: var(--papel, #e8dcc4);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+
+.teoria-bonus {
+  color: var(--dourado, #b8912e) !important;
+  font-family: var(--font-tech, monospace);
+  font-size: 1.3rem !important;
+  font-weight: bold;
+  text-shadow: 0 0 15px rgba(184,145,46,0.8);
+}
+
+.teoria-resultado-box .teorias-btn {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 700px) {
+  .teorias-box { padding: 1rem; }
+  .teorias-header h2 { font-size: 1.1rem; letter-spacing: 2px; }
+  .teorias-body { gap: 0.8rem; }
+  .teoria-evidencia { font-size: 0.72rem; padding: 0.6rem; }
+  .teoria-suspeito { padding: 0.6rem; }
+  .teoria-suspeito-avatar { width: 40px; height: 40px; font-size: 1.2rem; }
+}

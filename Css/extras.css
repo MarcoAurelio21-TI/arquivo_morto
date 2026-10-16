@@ -1,0 +1,521 @@
+/* ============================================================
+   ARQUIVO MORTO v4.0 — EXTRAS E PWA
+   ============================================================ */
+
+/* ===== MISSÕES ===== */
+.missoes-container {
+  max-width: 900px;
+  width: 100%;
+  padding: 2rem;
+  background: rgba(10,8,6,0.95);
+  border: 2px solid var(--sangue);
+  box-shadow: 0 0 60px rgba(139,26,26,0.4);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.missoes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.missoes-titulo {
+  font-family: var(--font-titulo);
+  color: var(--sangue-claro);
+  font-size: 1.6rem;
+  letter-spacing: 4px;
+}
+
+.missoes-moeda {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(184,145,46,0.15);
+  border: 1px solid var(--dourado);
+  border-radius: 20px;
+  color: var(--dourado);
+  font-family: var(--font-tech);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.missoes-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(139,26,26,0.3);
+}
+
+.missao-tab {
+  background: transparent;
+  border: none;
+  color: rgba(232,220,196,0.6);
+  padding: 0.7rem 1.2rem;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+
+.missao-tab:hover { color: var(--papel); }
+.missao-tab.ativo {
+  color: var(--dourado);
+  border-bottom-color: var(--dourado);
+}
+
+.missao-card {
+  padding: 1.2rem;
+  background: rgba(255,255,255,0.03);
+  border-left: 4px solid var(--sangue);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  transition: all 0.3s;
+}
+
+.missao-card:hover {
+  background: rgba(139,26,26,0.1);
+  transform: translateX(4px);
+}
+
+.missao-card.completa {
+  border-left-color: var(--verde);
+  background: rgba(45,90,45,0.1);
+}
+
+.missao-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.missao-nome {
+  font-family: var(--font-titulo);
+  color: var(--papel);
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.missao-desc {
+  font-size: 0.8rem;
+  color: rgba(232,220,196,0.7);
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+.missao-progresso {
+  height: 6px;
+  background: rgba(139,26,26,0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+.missao-prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sangue), var(--dourado));
+  transition: width 0.5s;
+}
+
+.missao-prog-texto {
+  font-size: 0.7rem;
+  color: var(--dourado);
+  font-family: var(--font-tech);
+}
+
+.missao-recompensa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.8rem 1rem;
+  background: rgba(184,145,46,0.1);
+  border: 1px solid var(--dourado);
+  border-radius: 8px;
+  min-width: 90px;
+}
+
+.missao-recompensa .valor {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.1rem;
+}
+
+.missao-recompensa .label {
+  font-size: 0.65rem;
+  color: rgba(232,220,196,0.6);
+  letter-spacing: 1px;
+}
+
+.btn-coletar-missao {
+  background: var(--verde);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  animation: pulsarRecompensa 1.5s infinite;
+}
+
+.btn-coletar-missao:hover {
+  background: #4a8a4a;
+  letter-spacing: 3px;
+}
+
+@keyframes pulsarRecompensa {
+  0%, 100% { box-shadow: 0 0 10px rgba(45,90,45,0.5); }
+  50% { box-shadow: 0 0 25px rgba(45,90,45,0.9); }
+}
+
+.btn-coletar-missao:disabled {
+  background: rgba(45,90,45,0.3);
+  cursor: not-allowed;
+  animation: none;
+}
+
+/* ===== TEMPORADAS ===== */
+.temporada-info {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(184,145,46,0.15), rgba(139,26,26,0.15));
+  border: 2px solid var(--dourado);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.temporada-nome {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.3rem;
+  letter-spacing: 3px;
+  margin-bottom: 0.5rem;
+}
+
+.temporada-dias {
+  color: var(--papel);
+  font-size: 0.85rem;
+  font-family: var(--font-tech);
+}
+
+.temporada-dias strong {
+  color: var(--sangue-claro);
+  font-size: 1.2rem;
+}
+
+/* ===== RANKING ONLINE ===== */
+.ranking-online-info {
+  text-align: center;
+  padding: 1rem;
+  background: rgba(0,0,0,0.3);
+  border-left: 3px solid var(--dourado);
+  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
+  color: rgba(232,220,196,0.8);
+}
+
+.ranking-online-info .status {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  margin-left: 0.5rem;
+}
+
+.ranking-online-info .status.online { background: var(--verde); color: white; }
+.ranking-online-info .status.offline { background: var(--sangue); color: white; }
+
+.badge-usuario {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  background: rgba(184,145,46,0.2);
+  border: 1px solid var(--dourado);
+  border-radius: 12px;
+  font-size: 0.7rem;
+  color: var(--dourado);
+  margin-left: 0.5rem;
+}
+
+/* ===== CAIXA DE RECOMPENSA ===== */
+.caixa-recompensa {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, var(--dourado), var(--sangue));
+  border: 3px solid var(--dourado);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  margin: 1rem auto;
+  animation: pulsarCaixa 2s infinite;
+}
+
+.caixa-recompensa:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.caixa-recompensa.aberta {
+  animation: abrirCaixa 0.8s forwards;
+}
+
+@keyframes pulsarCaixa {
+  0%, 100% { box-shadow: 0 0 20px rgba(184,145,46,0.5); }
+  50% { box-shadow: 0 0 50px rgba(184,145,46,0.9); }
+}
+
+@keyframes abrirCaixa {
+  0% { transform: scale(1) rotate(0); }
+  50% { transform: scale(1.3) rotate(180deg); }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+.loot-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s;
+}
+.loot-popup.show { display: flex; }
+
+.loot-box {
+  max-width: 500px;
+  width: 100%;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, rgba(20,15,10,0.98), rgba(10,5,0,0.98));
+  border: 3px solid var(--dourado);
+  box-shadow: 0 0 100px rgba(184,145,46,0.6);
+  text-align: center;
+  animation: zoomIn 0.5s;
+}
+
+.loot-titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.5rem;
+  letter-spacing: 4px;
+  margin-bottom: 1rem;
+}
+
+.loot-item {
+  font-size: 5rem;
+  margin: 1.5rem 0;
+  animation: flutuarLoot 2s infinite;
+}
+
+@keyframes flutuarLoot {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.loot-nome {
+  font-family: var(--font-titulo);
+  color: var(--sangue-claro);
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+}
+
+.loot-desc {
+  font-size: 0.85rem;
+  color: rgba(232,220,196,0.8);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.loot-raridade {
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  font-weight: bold;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.loot-raridade.comum { background: #666; color: white; }
+.loot-raridade.rara { background: #3a6ea5; color: white; }
+.loot-raridade.epica { background: #7a3aa5; color: white; }
+.loot-raridade.lendaria { background: linear-gradient(90deg, #d4a83a, #f4d03f); color: #1a1410; }
+
+/* ===== TELA DE BOAS-VINDAS ===== */
+.boas-vindas-box {
+  max-width: 600px;
+  padding: 2.5rem;
+  background: rgba(10,8,6,0.98);
+  border: 2px solid var(--dourado);
+  text-align: center;
+  box-shadow: 0 0 80px rgba(184,145,46,0.5);
+}
+
+.boas-vindas-titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+  margin-bottom: 1rem;
+}
+
+.boas-vindas-msg {
+  color: var(--papel);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+/* ===== COMPARTILHAR ===== */
+.btn-compartilhar {
+  background: transparent;
+  border: 2px solid var(--dourado);
+  color: var(--dourado);
+  padding: 0.7rem 1.5rem;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 0.5rem;
+}
+
+.btn-compartilhar:hover {
+  background: var(--dourado);
+  color: var(--tinta);
+}
+
+/* ===== INSTALAR PWA ===== */
+.btn-instalar-pwa {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--sangue), var(--dourado));
+  color: white;
+  border: 2px solid var(--dourado);
+  padding: 0.8rem 1.5rem;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(139,26,26,0.5);
+  z-index: 8000;
+  display: none;
+  animation: pulsarInstalar 2s infinite;
+}
+.btn-instalar-pwa.show { display: block; }
+.btn-instalar-pwa:hover { transform: scale(1.05); }
+
+@keyframes pulsarInstalar {
+  0%, 100% { box-shadow: 0 10px 30px rgba(139,26,26,0.5); }
+  50% { box-shadow: 0 10px 40px rgba(184,145,46,0.9); }
+}
+
+/* ===== NOTIFICAÇÃO ===== */
+.notif-toast {
+  position: fixed;
+  top: 80px;
+  right: -400px;
+  background: rgba(10,8,6,0.98);
+  border-left: 4px solid var(--dourado);
+  padding: 1rem 1.5rem;
+  color: var(--papel);
+  font-size: 0.85rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  z-index: 9999;
+  transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 320px;
+}
+.notif-toast.show { right: 20px; }
+.notif-toast .titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  letter-spacing: 1px;
+  margin-bottom: 0.3rem;
+}
+.notif-toast .msg {
+  font-size: 0.8rem;
+  color: rgba(232,220,196,0.85);
+}
+
+/* ===== PERFIL ===== */
+.perfil-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(139,26,26,0.2), rgba(184,145,46,0.1));
+  border: 2px solid var(--dourado);
+  margin-bottom: 1.5rem;
+}
+
+.perfil-avatar {
+  width: 100px;
+  height: 100px;
+  border: 3px solid var(--dourado);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  background: radial-gradient(circle, rgba(184,145,46,0.3), rgba(0,0,0,0.8));
+}
+
+.perfil-info h3 {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.perfil-info .titulo {
+  color: var(--sangue-claro);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.perfil-badges {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.badge {
+  padding: 0.3rem 0.7rem;
+  background: rgba(184,145,46,0.2);
+  border: 1px solid var(--dourado);
+  color: var(--dourado);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  border-radius: 12px;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 700px) {
+  .missoes-titulo { font-size: 1.2rem; }
+  .missao-card { flex-direction: column; align-items: stretch; }
+  .missao-recompensa { align-self: center; }
+  .btn-instalar-pwa { bottom: 15px; right: 15px; font-size: 0.7rem; padding: 0.6rem 1rem; }
+  .perfil-header { flex-direction: column; text-align: center; }
+}

@@ -1,0 +1,239 @@
+/* ============================================================
+   ARQUIVO MORTO v6.0 — NPCs PERSISTENTES
+   ============================================================ */
+
+.npcs-caso {
+  margin: 1.5rem 0;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, rgba(122,58,165,0.08), rgba(139,26,26,0.08));
+  border-left: 4px solid #7a3aa5;
+  border-radius: 8px;
+}
+
+.npcs-titulo {
+  font-family: var(--font-titulo);
+  color: #cc99ff;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(204,153,255,0.5);
+}
+
+.npcs-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.npc-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  background: rgba(0,0,0,0.3);
+  border-left: 3px solid #7a3aa5;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.npc-card:hover {
+  background: rgba(122,58,165,0.15);
+  transform: translateX(4px);
+}
+
+.npc-avatar {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border: 2px solid #7a3aa5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: radial-gradient(circle, rgba(122,58,165,0.3), rgba(0,0,0,0.6));
+}
+
+.npc-info { flex: 1; }
+.npc-info strong {
+  display: block;
+  font-family: var(--font-titulo);
+  color: #cc99ff;
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.npc-titulo {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--dourado);
+  letter-spacing: 1px;
+  margin-bottom: 0.3rem;
+}
+
+.npc-desc {
+  font-size: 0.75rem;
+  color: rgba(232,220,196,0.7);
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.btn-npc-conversar {
+  background: linear-gradient(135deg, #7a3aa5, #a05ac5);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-main);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-npc-conversar:hover {
+  background: linear-gradient(135deg, #a05ac5, #cc99ff);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(122,58,165,0.5);
+}
+
+/* ===== MODAL DE DIÁLOGO ===== */
+.modal-npc {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s;
+}
+
+.modal-npc-box {
+  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1a0a2a, #0a0510);
+  border: 3px solid #7a3aa5;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(122,58,165,0.6);
+  animation: zoomIn 0.4s;
+}
+
+.npc-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px dashed rgba(122,58,165,0.4);
+}
+
+.npc-avatar-grande {
+  width: 80px;
+  height: 80px;
+  border: 3px solid #7a3aa5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  background: radial-gradient(circle, rgba(122,58,165,0.4), rgba(0,0,0,0.8));
+  flex-shrink: 0;
+}
+
+.npc-header h3 {
+  font-family: var(--font-titulo);
+  color: #cc99ff;
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.npc-titulo-modal {
+  font-size: 0.75rem;
+  color: var(--dourado);
+  letter-spacing: 2px;
+}
+
+.npc-dialogo {
+  padding: 1rem;
+  background: rgba(0,0,0,0.4);
+  border-left: 4px solid #7a3aa5;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+.npc-dialogo p {
+  color: var(--papel);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.npc-aparencia {
+  font-size: 0.8rem;
+  color: rgba(232,220,196,0.7);
+  margin-bottom: 1rem;
+  padding: 0.7rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 4px;
+}
+
+.npc-aparencia strong { color: var(--dourado); }
+
+.npc-pista {
+  padding: 1rem;
+  background: rgba(184,145,46,0.15);
+  border-left: 4px solid var(--dourado);
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  animation: fadeIn 0.5s;
+}
+
+.npc-pista-titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.npc-pista-texto {
+  color: var(--papel);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.npc-acoes {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.btn-npc {
+  background: linear-gradient(135deg, #7a3aa5, #a05ac5);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.btn-npc:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(122,58,165,0.5);
+}
+
+@media (max-width: 700px) {
+  .npc-card { flex-direction: column; text-align: center; }
+  .btn-npc-conversar { width: 100%; }
+  .npc-header { flex-direction: column; text-align: center; }
+  .modal-npc-box { padding: 1.2rem; }
+}

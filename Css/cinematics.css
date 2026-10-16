@@ -1,0 +1,508 @@
+/* ============================================================
+   ARQUIVO MORTO v6.0 — CINEMATICS PREMIUM
+   Intro Cinematográfica com Chuva, Glitch e Terror
+   ============================================================ */
+
+/* TELA DE INTRO */
+#screen-intro {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #000;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+#screen-intro.active { display: flex; }
+
+#screen-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(139,26,26,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(0,0,0,0.9) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Vinheta pulsante de terror */
+#screen-intro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.9) 100%);
+  pointer-events: none;
+  z-index: 3;
+  animation: vinhetaPulsante 4s ease-in-out infinite;
+}
+
+@keyframes vinhetaPulsante {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.intro-container {
+  max-width: 800px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.intro-cena {
+  display: none;
+  animation: fadeInCena 1.2s ease;
+  text-align: center;
+}
+
+.intro-cena.ativa { display: block; }
+
+@keyframes fadeInCena {
+  from { opacity: 0; transform: scale(0.95) translateY(15px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.intro-texto {
+  font-family: 'Special Elite', serif;
+  font-size: 1.4rem;
+  line-height: 2.1;
+  color: #e8dcc4;
+  min-height: 200px;
+  text-shadow:
+    0 0 20px rgba(139,26,26,0.6),
+    0 0 40px rgba(139,26,26,0.3);
+  letter-spacing: 1px;
+}
+
+.intro-texto .cursor-cinema {
+  display: inline-block;
+  width: 12px;
+  height: 22px;
+  background: #c23b3b;
+  margin-left: 4px;
+  animation: blink 1s infinite;
+  vertical-align: middle;
+  box-shadow: 0 0 15px rgba(194,59,59,0.9);
+}
+
+.intro-imagem {
+  font-size: 7rem;
+  margin: 2rem 0;
+  animation: pulseCena 3s infinite;
+  filter: drop-shadow(0 0 40px rgba(194,59,59,0.7));
+}
+
+@keyframes pulseCena {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+.intro-titulo {
+  font-family: 'Special Elite', serif;
+  font-size: 3rem;
+  color: #c23b3b;
+  letter-spacing: 12px;
+  margin-bottom: 1.5rem;
+  text-shadow:
+    0 0 30px rgba(194,59,59,0.9),
+    0 0 60px rgba(194,59,59,0.5);
+  animation: glitchTitulo 3s infinite;
+}
+
+@keyframes glitchTitulo {
+  0%, 88%, 100% {
+    transform: translate(0);
+    text-shadow: 0 0 30px rgba(194,59,59,0.9), 0 0 60px rgba(194,59,59,0.5);
+  }
+  90% {
+    transform: translate(-4px, 0);
+    text-shadow: 4px 0 #00ffcc, -4px 0 #ff0080;
+  }
+  92% {
+    transform: translate(4px, 0);
+    text-shadow: -4px 0 #00ffcc, 4px 0 #ff0080;
+  }
+  94% {
+    transform: translate(-2px, 0);
+    text-shadow: 0 0 30px rgba(194,59,59,0.9), 0 0 60px rgba(194,59,59,0.5);
+  }
+  96% {
+    transform: translate(2px, 0);
+    text-shadow: 2px 0 #00ffcc, -2px 0 #ff0080;
+  }
+}
+
+.intro-controles {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.intro-btn {
+  background: transparent;
+  border: 2px solid #8b1a1a;
+  color: #e8dcc4;
+  padding: 0.8rem 1.5rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(194,59,59,0.4), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.intro-btn:hover::before {
+  transform: translateX(100%);
+}
+
+.intro-btn:hover {
+  background: #8b1a1a;
+  color: #e8dcc4;
+  box-shadow: 0 0 30px rgba(139,26,26,0.8);
+  letter-spacing: 5px;
+  transform: translateY(-3px);
+}
+
+.intro-btn.destaque {
+  background: #8b1a1a;
+  border-color: #c23b3b;
+  animation: pulseBotao 1.5s infinite;
+}
+
+@keyframes pulseBotao {
+  0%, 100% { box-shadow: 0 0 15px rgba(139,26,26,0.5); }
+  50% { box-shadow: 0 0 40px rgba(194,59,59,1); }
+}
+
+.intro-pular {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: rgba(232,220,196,0.6);
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Courier Prime', monospace;
+  z-index: 5;
+  border: 1px solid rgba(232,220,196,0.3);
+  padding: 0.6rem 1.2rem;
+  background: rgba(0,0,0,0.6);
+  border-radius: 25px;
+}
+
+.intro-pular:hover {
+  color: #c23b3b;
+  border-color: #c23b3b;
+  background: rgba(139,26,26,0.3);
+  box-shadow: 0 0 25px rgba(194,59,59,0.5);
+  transform: translateY(-2px);
+}
+
+/* CHUVA VISUAL MELHORADA */
+.intro-fundo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(20,10,10,0.8) 0%, transparent 60%),
+    linear-gradient(180deg, #0a0503 0%, #000 100%);
+}
+
+.intro-fundo .chuva {
+  position: absolute;
+  width: 1px;
+  height: 120px;
+  background: linear-gradient(
+    transparent 0%,
+    rgba(194,59,59,0.5) 30%,
+    rgba(232,220,196,0.3) 50%,
+    rgba(194,59,59,0.5) 70%,
+    transparent 100%
+  );
+  animation: cair linear infinite;
+  box-shadow: 0 0 3px rgba(194,59,59,0.4);
+}
+
+@keyframes cair {
+  from { transform: translateY(-120vh) rotate(15deg); }
+  to { transform: translateY(120vh) rotate(15deg); }
+}
+
+/* Relâmpago */
+.intro-fundo .relampago {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  animation: relampejar 8s infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes relampejar {
+  0%, 91%, 93%, 100% { opacity: 0; }
+  92% { opacity: 0.4; }
+  94% { opacity: 0.15; }
+  95% { opacity: 0.35; }
+}
+
+.intro-fundo .relampago.forte {
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.3) 40%, transparent 70%);
+}
+
+/* LOADING */
+#screen-loading {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at center, #1a0a08 0%, #050302 100%);
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+}
+#screen-loading.active { display: flex; }
+
+#screen-loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(139,26,26,0.06) 3px,
+    rgba(139,26,26,0.06) 4px
+  );
+  pointer-events: none;
+  animation: loadingScanlines 3s linear infinite;
+}
+
+@keyframes loadingScanlines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+.loading-titulo {
+  font-family: 'Special Elite', serif;
+  font-size: 2.2rem;
+  color: #c23b3b;
+  letter-spacing: 8px;
+  animation: pulseCena 2s infinite;
+  text-shadow: 0 0 30px rgba(194,59,59,0.8);
+}
+
+.loading-barra {
+  width: 320px;
+  height: 6px;
+  background: rgba(139,26,26,0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.loading-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b1a1a, #c23b3b, #d4a83a, #c23b3b, #8b1a1a);
+  background-size: 200% 100%;
+  width: 0%;
+  animation: carregar 3s ease forwards, brilhar 1.5s infinite;
+  box-shadow: 0 0 15px rgba(194,59,59,0.8);
+}
+
+@keyframes carregar {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+@keyframes brilhar {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.loading-texto {
+  font-size: 0.85rem;
+  color: rgba(232,220,196,0.6);
+  letter-spacing: 3px;
+  font-family: 'Courier Prime', monospace;
+  min-height: 1.5rem;
+  text-shadow: 0 0 10px rgba(194,59,59,0.4);
+}
+
+/* HISTÓRIA NARRATIVA */
+#screen-historia {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at center, #1a1410 0%, #000 100%);
+  padding: 2rem;
+  position: relative;
+}
+#screen-historia.active { display: flex; }
+
+#screen-historia::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(139,26,26,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(184,145,46,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.historia-box {
+  max-width: 700px;
+  width: 100%;
+  padding: 3rem 2rem;
+  border: 2px solid #8b1a1a;
+  background: rgba(10,8,6,0.98);
+  box-shadow:
+    0 0 80px rgba(139,26,26,0.6),
+    inset 0 0 60px rgba(139,26,26,0.08);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.historia-box::before {
+  content: "CONFIDENCIAL";
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: rgba(194,59,59,0.6);
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  border: 1px solid rgba(194,59,59,0.4);
+  padding: 0.3rem 0.8rem;
+  transform: rotate(8deg);
+  font-family: 'Courier Prime', monospace;
+}
+
+.historia-titulo {
+  font-family: 'Special Elite', serif;
+  font-size: 2rem;
+  color: #c23b3b;
+  letter-spacing: 6px;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 25px rgba(194,59,59,0.7);
+}
+
+.historia-texto {
+  font-size: 1.05rem;
+  line-height: 2.1;
+  color: #e8dcc4;
+  min-height: 180px;
+  text-align: left;
+  font-family: 'Courier Prime', monospace;
+}
+
+.historia-texto .destaque {
+  color: #c23b3b;
+  font-weight: bold;
+  font-family: 'Special Elite', serif;
+  text-shadow: 0 0 15px rgba(194,59,59,0.7);
+}
+
+.historia-texto .digitando::after {
+  content: "▊";
+  animation: blink 0.8s infinite;
+  color: #c23b3b;
+}
+
+.historia-btn {
+  margin-top: 2rem;
+  background: linear-gradient(135deg, #8b1a1a, #c23b3b);
+  color: #e8dcc4;
+  border: none;
+  padding: 1rem 2.2rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0;
+  animation: aparecerBtn 0.5s 0.5s forwards;
+  box-shadow: 0 5px 25px rgba(139,26,26,0.6);
+}
+
+@keyframes aparecerBtn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.historia-btn:hover {
+  background: linear-gradient(135deg, #c23b3b, #e63946);
+  letter-spacing: 5px;
+  box-shadow: 0 10px 40px rgba(194,59,59,0.9);
+  transform: translateY(-3px);
+}
+
+/* TRANSIÇÃO */
+.cena-transicao {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+.cena-transicao.ativa {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* MODO CINEMA */
+body.modo-cinema .scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,0.2) 3px,
+    rgba(0,0,0,0.2) 4px
+  );
+}
+
+body.modo-cinema::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9990;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.95) 0%, transparent 12%, transparent 88%, rgba(0,0,0,0.95) 100%);
+}
+
+/* RESPONSIVO */
+@media (max-width: 700px) {
+  .intro-titulo { font-size: 1.8rem; letter-spacing: 6px; }
+  .intro-texto { font-size: 1.05rem; line-height: 1.8; }
+  .intro-imagem { font-size: 5rem; }
+  .historia-titulo { font-size: 1.4rem; letter-spacing: 3px; }
+  .historia-texto { font-size: 0.9rem; line-height: 1.8; }
+  .intro-pular {
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.7rem;
+    padding: 0.4rem 0.9rem;
+  }
+  .loading-barra { width: 90%; }
+}

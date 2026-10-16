@@ -1,0 +1,459 @@
+/* ============================================================
+   ARQUIVO MORTO v7.0 — JULGAMENTO CINEMATOGRÁFICO
+   ============================================================ */
+
+#screen-julgamento {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background:
+    radial-gradient(ellipse at top, #1a1010 0%, #050202 100%);
+  position: relative;
+}
+#screen-julgamento.active { display: flex; }
+
+/* Efeito de holofote no centro */
+#screen-julgamento::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(184,145,46,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(139,26,26,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Scanlines */
+#screen-julgamento::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,0.12) 3px,
+    rgba(0,0,0,0.12) 4px
+  );
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.julgamento-box {
+  max-width: 1050px;
+  width: 100%;
+  padding: 2.5rem 2rem;
+  border: 3px solid var(--sangue);
+  background:
+    linear-gradient(135deg, rgba(15,8,8,0.98) 0%, rgba(5,2,2,0.99) 100%);
+  box-shadow:
+    0 0 120px rgba(139,26,26,0.6),
+    inset 0 0 60px rgba(139,26,26,0.1);
+  max-height: 92vh;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+  animation: julgamentoEntrando 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes julgamentoEntrando {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Martelo gigante no fundo */
+.julgamento-box::before {
+  content: "⚖️";
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 5rem;
+  opacity: 0.08;
+  pointer-events: none;
+  transform: rotate(-15deg);
+}
+
+.julgamento-titulo {
+  font-family: var(--font-titulo);
+  color: var(--sangue-claro);
+  font-size: 2.2rem;
+  letter-spacing: 8px;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  text-shadow:
+    0 0 30px rgba(194,59,59,0.9),
+    0 0 60px rgba(194,59,59,0.4);
+  animation: julgamentoPulsa 2s ease-in-out infinite;
+}
+
+@keyframes julgamentoPulsa {
+  0%, 100% { text-shadow: 0 0 30px rgba(194,59,59,0.9), 0 0 60px rgba(194,59,59,0.4); }
+  50% { text-shadow: 0 0 50px rgba(194,59,59,1), 0 0 90px rgba(194,59,59,0.6); }
+}
+
+.julgamento-sub {
+  text-align: center;
+  color: rgba(232,220,196,0.75);
+  font-style: italic;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+/* ===== CASO ===== */
+.julgamento-caso {
+  padding: 1.3rem;
+  background:
+    linear-gradient(135deg, rgba(139,26,26,0.2), rgba(139,26,26,0.05));
+  border-left: 5px solid var(--sangue);
+  border-right: 5px solid var(--sangue);
+  margin-bottom: 2rem;
+  text-align: center;
+  border-radius: 4px;
+  position: relative;
+}
+
+.julgamento-caso::before,
+.julgamento-caso::after {
+  content: "◆";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--dourado);
+  font-size: 1rem;
+}
+
+.julgamento-caso::before { left: 0.5rem; }
+.julgamento-caso::after { right: 0.5rem; }
+
+.julgamento-caso-titulo {
+  font-family: var(--font-titulo);
+  color: var(--papel);
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 0 10px rgba(232,220,196,0.3);
+}
+
+.julgamento-caso-acusado {
+  color: var(--sangue-claro);
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.julgamento-caso-acusado strong {
+  color: var(--dourado);
+  font-family: var(--font-titulo);
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(184,145,46,0.6);
+}
+
+/* ===== PROVAS ===== */
+.julgamento-provas {
+  margin: 2rem 0;
+}
+
+.julgamento-provas-titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.05rem;
+  letter-spacing: 3px;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  text-shadow: 0 0 15px rgba(184,145,46,0.5);
+  position: relative;
+}
+
+.julgamento-provas-titulo::before,
+.julgamento-provas-titulo::after {
+  content: "────────────";
+  color: rgba(184,145,46,0.3);
+  margin: 0 1rem;
+  font-size: 0.7rem;
+  vertical-align: middle;
+}
+
+.provas-slots {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.prova-slot {
+  width: 220px;
+  height: 140px;
+  border: 3px dashed rgba(139,26,26,0.5);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0.9rem;
+  text-align: center;
+  background:
+    linear-gradient(135deg, rgba(0,0,0,0.5), rgba(20,10,10,0.4));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.prova-slot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(184,145,46,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.prova-slot.vazio {
+  color: rgba(232,220,196,0.4);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.prova-slot.preenchido {
+  border-style: solid;
+  border-color: var(--dourado);
+  background:
+    linear-gradient(135deg, rgba(184,145,46,0.25), rgba(139,26,26,0.2));
+  box-shadow:
+    0 0 30px rgba(184,145,46,0.5),
+    inset 0 0 30px rgba(184,145,46,0.1);
+  animation: slotPreenchido 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slotPreenchido {
+  0% { transform: scale(0.8) rotate(-5deg); opacity: 0; }
+  60% { transform: scale(1.05) rotate(2deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.prova-slot .slot-num {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: var(--sangue);
+  color: var(--papel);
+  padding: 3px 10px;
+  font-size: 0.68rem;
+  border-radius: 10px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
+.prova-slot.preenchido .slot-num {
+  background: var(--dourado);
+  color: var(--tinta);
+}
+
+.prova-slot .prova-texto {
+  font-size: 0.8rem;
+  color: var(--papel);
+  line-height: 1.5;
+  font-family: 'Special Elite', serif;
+}
+
+/* ===== PROVAS DISPONÍVEIS ===== */
+.provas-disponiveis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+.prova-card {
+  padding: 1rem 1.1rem;
+  background:
+    linear-gradient(135deg, rgba(0,0,0,0.5), rgba(20,10,10,0.4));
+  border-left: 4px solid var(--sangue);
+  color: var(--papel);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Special Elite', serif;
+}
+
+.prova-card::before {
+  content: "📎";
+  position: absolute;
+  top: -6px;
+  right: 8px;
+  font-size: 1.1rem;
+  opacity: 0.5;
+  transform: rotate(15deg);
+}
+
+.prova-card:hover:not(.usada) {
+  background:
+    linear-gradient(135deg, rgba(139,26,26,0.35), rgba(139,26,26,0.15));
+  transform: translateX(8px) rotate(-0.5deg);
+  border-left-color: var(--dourado);
+  box-shadow:
+    0 8px 25px rgba(139,26,26,0.5),
+    0 0 25px rgba(184,145,46,0.2);
+}
+
+.prova-card.usada {
+  opacity: 0.25;
+  cursor: not-allowed;
+  border-left-color: #666;
+  filter: grayscale(0.8);
+}
+
+/* ===== AÇÕES ===== */
+.julgamento-acoes {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-julgar {
+  background: linear-gradient(135deg, var(--sangue), var(--sangue-claro));
+  color: var(--papel);
+  border: none;
+  padding: 1.1rem 2.2rem;
+  font-family: var(--font-titulo);
+  font-size: 1rem;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(139,26,26,0.5);
+}
+
+.btn-julgar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.btn-julgar:hover:not(:disabled)::before {
+  transform: translateX(100%);
+}
+
+.btn-julgar:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--sangue-claro), var(--sangue-vivo));
+  transform: translateY(-4px) scale(1.03);
+  box-shadow:
+    0 15px 40px rgba(194,59,59,0.8),
+    0 0 40px rgba(194,59,59,0.5);
+  letter-spacing: 6px;
+}
+
+.btn-julgar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.btn-julgar.secundario {
+  background: transparent;
+  border: 2px solid var(--sangue);
+  box-shadow: none;
+}
+
+.btn-julgar.secundario:hover:not(:disabled) {
+  background: var(--sangue);
+  box-shadow: 0 10px 30px rgba(139,26,26,0.6);
+}
+
+/* ===== RESULTADO ===== */
+.julgamento-resultado {
+  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  display: none;
+  animation: resultadoEntrando 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+@keyframes resultadoEntrando {
+  from { opacity: 0; transform: scale(0.8) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.julgamento-resultado.show { display: block; }
+
+.julgamento-resultado.vitoria {
+  background:
+    linear-gradient(135deg, rgba(45,90,45,0.4), rgba(45,90,45,0.15));
+  border: 3px solid var(--verde);
+  box-shadow:
+    0 0 60px rgba(45,90,45,0.6),
+    inset 0 0 40px rgba(45,90,45,0.1);
+}
+
+.julgamento-resultado.derrota {
+  background:
+    linear-gradient(135deg, rgba(139,26,26,0.4), rgba(139,26,26,0.15));
+  border: 3px solid var(--sangue-claro);
+  box-shadow:
+    0 0 60px rgba(194,59,59,0.6),
+    inset 0 0 40px rgba(194,59,59,0.1);
+}
+
+.julgamento-resultado h3 {
+  font-family: var(--font-titulo);
+  font-size: 1.8rem;
+  letter-spacing: 5px;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 0 25px currentColor;
+}
+
+.julgamento-resultado.vitoria h3 {
+  color: #9fdf9f;
+  animation: textoVitoria 2s ease-in-out infinite;
+}
+
+@keyframes textoVitoria {
+  0%, 100% { text-shadow: 0 0 25px rgba(159,223,159,0.8); }
+  50% { text-shadow: 0 0 45px rgba(159,223,159,1); }
+}
+
+.julgamento-resultado.derrota h3 {
+  color: var(--sangue-claro);
+  animation: textoDerrota 1s ease-in-out infinite;
+}
+
+@keyframes textoDerrota {
+  0%, 100% { text-shadow: 0 0 25px rgba(194,59,59,0.8); }
+  50% { text-shadow: 0 0 45px rgba(194,59,59,1); }
+}
+
+.julgamento-resultado p {
+  color: var(--papel);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 0.8rem;
+  font-family: 'Special Elite', serif;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 700px) {
+  .julgamento-box { padding: 1.5rem 1.2rem; }
+  .julgamento-titulo { font-size: 1.4rem; letter-spacing: 4px; }
+  .julgamento-sub { font-size: 0.85rem; }
+  .prova-slot { width: 150px; height: 110px; }
+  .prova-slot .prova-texto { font-size: 0.72rem; }
+  .btn-julgar { padding: 0.9rem 1.4rem; font-size: 0.85rem; letter-spacing: 3px; }
+  .julgamento-resultado h3 { font-size: 1.3rem; letter-spacing: 3px; }
+  .julgamento-resultado p { font-size: 0.85rem; }
+  .julgamento-box::before { font-size: 3rem; }
+}

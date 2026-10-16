@@ -1,0 +1,758 @@
+/* ============================================================
+   ARQUIVO MORTO v7.0 — INTERROGATÓRIO CINEMATOGRÁFICO
+   ============================================================ */
+
+/* ===== OVERLAY ===== */
+.interrogatorio-overlay {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(20,10,10,0.98) 0%, rgba(0,0,0,1) 100%);
+  z-index: 9500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.5s;
+}
+.interrogatorio-overlay.ativo { display: flex; }
+
+/* Foco de luz no centro */
+.interrogatorio-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255,200,150,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(139,26,26,0.15) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scanlines sutis */
+.interrogatorio-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.15) 2px,
+    rgba(0,0,0,0.15) 3px
+  );
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.5;
+}
+
+/* ===== CAIXA PRINCIPAL ===== */
+.interrogatorio-box {
+  max-width: 1250px;
+  width: 100%;
+  max-height: 95vh;
+  background:
+    linear-gradient(135deg, rgba(15,12,10,0.99) 0%, rgba(5,3,2,0.99) 100%);
+  border: 3px solid var(--sangue);
+  box-shadow:
+    0 0 120px rgba(139,26,26,0.7),
+    inset 0 0 80px rgba(139,26,26,0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
+  animation: interrogatorioEntrando 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes interrogatorioEntrando {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Moldura interna */
+.interrogatorio-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(139,26,26,0.04) 3px,
+      rgba(139,26,26,0.04) 4px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Cantos decorativos */
+.interrogatorio-box::after {
+  content: "";
+  position: absolute;
+  top: 8px; left: 8px;
+  width: 30px; height: 30px;
+  border-top: 2px solid var(--dourado);
+  border-left: 2px solid var(--dourado);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===== HEADER ===== */
+.interrogatorio-header {
+  padding: 1rem 1.5rem;
+  background: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(20,5,5,0.8));
+  border-bottom: 2px solid var(--sangue);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 4px 20px rgba(139,26,26,0.3);
+}
+
+.interrogatorio-titulo {
+  font-family: var(--font-titulo);
+  color: var(--sangue-claro);
+  font-size: 1.15rem;
+  letter-spacing: 5px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-shadow: 0 0 20px rgba(194,59,59,0.7);
+}
+
+.interrogatorio-titulo::before {
+  content: "●";
+  color: var(--sangue-vivo);
+  font-size: 1rem;
+  animation: recPiscando 1s infinite;
+  filter: drop-shadow(0 0 8px var(--sangue-vivo));
+}
+
+@keyframes recPiscando {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+.interrogatorio-controles { display: flex; gap: 0.5rem; }
+
+.btn-fechar-int {
+  background: transparent;
+  border: 1px solid var(--sangue);
+  color: var(--sangue-claro);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-main);
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-fechar-int::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(194,59,59,0.4), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.btn-fechar-int:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-fechar-int:hover {
+  background: var(--sangue);
+  color: var(--papel);
+  box-shadow: 0 0 20px rgba(194,59,59,0.7);
+}
+
+/* ===== CONTEÚDO ===== */
+.interrogatorio-conteudo {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 1.8rem;
+  padding: 1.8rem;
+  overflow-y: auto;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .interrogatorio-conteudo { grid-template-columns: 1fr; }
+}
+
+/* ===== SUSPEITO ===== */
+.suspeito-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  position: relative;
+}
+
+/* Foco de luz atrás do suspeito */
+.suspeito-visual::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(255,200,150,0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.suspeito-avatar-grande {
+  width: 180px;
+  height: 180px;
+  border: 4px solid var(--sangue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5.5rem;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(139,26,26,0.4), rgba(0,0,0,0.9));
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 0 50px rgba(139,26,26,0.6),
+    inset 0 0 30px rgba(139,26,26,0.3);
+  animation: respirando 4s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes respirando {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.suspeito-avatar-grande.nervoso {
+  animation: tremerAvatar 0.3s infinite, respirando 1.5s ease-in-out infinite;
+  border-color: var(--dourado);
+  box-shadow:
+    0 0 60px rgba(184,145,46,0.8),
+    inset 0 0 30px rgba(184,145,46,0.4);
+}
+
+.suspeito-avatar-grande.mentindo {
+  border-color: var(--sangue-vivo);
+  box-shadow:
+    0 0 80px rgba(230,57,70,1),
+    inset 0 0 40px rgba(230,57,70,0.5);
+  animation: tremerAvatar 0.15s infinite, pulsarMentira 0.8s infinite;
+}
+
+@keyframes tremerAvatar {
+  0%, 100% { transform: translateX(0) scale(1.02); }
+  25% { transform: translateX(-4px) scale(1.02); }
+  75% { transform: translateX(4px) scale(1.02); }
+}
+
+@keyframes pulsarMentira {
+  0%, 100% { transform: scale(1.02); }
+  50% { transform: scale(1.05); }
+}
+
+/* Gota de suor animada quando mente */
+.suspeito-avatar-grande.mentindo::before {
+  content: "💧";
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 1.5rem;
+  animation: gotaSuor 1.5s infinite;
+}
+
+@keyframes gotaSuor {
+  0% { opacity: 0; transform: translateY(0) scale(0.5); }
+  20% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(40px) scale(0.8); }
+}
+
+/* ===== EMOÇÃO ===== */
+.suspeito-emocao {
+  font-size: 2.2rem;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  animation: flutuarEmocao 2s infinite;
+  filter: drop-shadow(0 0 15px rgba(255,204,102,0.8));
+  z-index: 5;
+}
+
+@keyframes flutuarEmocao {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-10px) rotate(-8deg); }
+}
+
+/* ===== STATUS ===== */
+.suspeito-status {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(139,26,26,0.3);
+  border-radius: 6px;
+  box-shadow: inset 0 0 30px rgba(139,26,26,0.1);
+}
+
+.status-barra {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.status-label {
+  font-size: 0.68rem;
+  color: rgba(232,220,196,0.75);
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-tech);
+}
+
+.status-fill {
+  height: 8px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(139,26,26,0.3);
+}
+
+.status-fill-inner {
+  height: 100%;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+  position: relative;
+}
+
+.status-fill-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: brilharStatus 2s infinite;
+}
+
+@keyframes brilharStatus {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.estresse-fill {
+  background: linear-gradient(90deg, #4a8a4a, #d4a83a, #c23b3b);
+  box-shadow: 0 0 10px rgba(194,59,59,0.5);
+}
+
+.verdade-fill {
+  background: linear-gradient(90deg, #c23b3b, #d4a83a, #4a8a4a);
+  box-shadow: 0 0 10px rgba(74,138,74,0.5);
+}
+
+.confianca-fill {
+  background: linear-gradient(90deg, #3a6ea5, #7a3aa5);
+  box-shadow: 0 0 10px rgba(122,58,165,0.5);
+}
+
+/* ===== DIÁLOGO ===== */
+.dialogo-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  position: relative;
+}
+
+.dialogo-nome {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.2rem;
+  letter-spacing: 4px;
+  border-bottom: 2px dashed rgba(184,145,46,0.3);
+  padding-bottom: 0.6rem;
+  text-shadow: 0 0 20px rgba(184,145,46,0.6);
+}
+
+.dialogo-texto {
+  background:
+    linear-gradient(135deg, rgba(0,0,0,0.6), rgba(20,10,10,0.4));
+  border-left: 5px solid var(--sangue);
+  padding: 1.5rem 1.5rem 1.5rem 2.8rem;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--papel);
+  min-height: 120px;
+  position: relative;
+  font-style: italic;
+  border-radius: 4px;
+  box-shadow:
+    0 5px 25px rgba(0,0,0,0.5),
+    inset 0 0 30px rgba(139,26,26,0.05);
+  font-family: 'Special Elite', serif;
+}
+
+.dialogo-texto::before {
+  content: '"';
+  position: absolute;
+  top: 0.3rem;
+  left: 0.8rem;
+  font-size: 4rem;
+  color: rgba(139,26,26,0.5);
+  font-family: 'Special Elite', serif;
+  line-height: 1;
+  font-style: normal;
+}
+
+.dialogo-texto::after {
+  content: '"';
+  position: absolute;
+  bottom: -0.5rem;
+  right: 1rem;
+  font-size: 4rem;
+  color: rgba(139,26,26,0.5);
+  font-family: 'Special Elite', serif;
+  line-height: 1;
+  font-style: normal;
+}
+
+/* Efeito de gagueira quando mente */
+.dialogo-texto.gaguejando {
+  animation: gaguejar 0.2s infinite;
+}
+
+@keyframes gaguejar {
+  0%, 100% { letter-spacing: 0; transform: translateX(0); }
+  25% { letter-spacing: 1px; transform: translateX(-1px); }
+  75% { letter-spacing: 0.5px; transform: translateX(1px); }
+}
+
+/* ===== PERGUNTAS ===== */
+.perguntas-titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  margin-top: 0.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px dashed rgba(184,145,46,0.3);
+}
+
+.perguntas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.perguntas-lista::-webkit-scrollbar { width: 6px; }
+.perguntas-lista::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+.perguntas-lista::-webkit-scrollbar-thumb {
+  background: var(--sangue);
+  border-radius: 3px;
+}
+
+.pergunta-btn {
+  background: linear-gradient(135deg, rgba(0,0,0,0.5), rgba(20,10,10,0.4));
+  border: 1px solid rgba(139,26,26,0.5);
+  color: var(--papel);
+  padding: 0.9rem 1.1rem;
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-left: 4px solid var(--sangue);
+  position: relative;
+  overflow: hidden;
+}
+
+.pergunta-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(194,59,59,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.pergunta-btn:hover:not(:disabled)::before {
+  transform: translateX(100%);
+}
+
+.pergunta-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(139,26,26,0.35), rgba(139,26,26,0.15));
+  border-left-color: var(--dourado);
+  padding-left: 1.5rem;
+  transform: translateX(4px);
+  box-shadow: 0 5px 20px rgba(139,26,26,0.4);
+}
+
+.pergunta-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pergunta-btn.usada {
+  border-left-color: var(--verde);
+  opacity: 0.7;
+}
+
+.pergunta-btn .icone {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.pergunta-btn.pressionar {
+  border-left-color: var(--sangue-vivo);
+  background: linear-gradient(135deg, rgba(139,26,26,0.4), rgba(139,26,26,0.15));
+  animation: pulsarPerigo 1.5s infinite;
+}
+
+.pergunta-btn.pressionar:hover:not(:disabled) {
+  background: var(--sangue-vivo);
+  color: white;
+}
+
+/* ===== RESPOSTA / ANÁLISE ===== */
+.resposta-analise {
+  padding: 1.1rem 1.3rem;
+  border-left: 5px solid var(--dourado);
+  background: linear-gradient(135deg, rgba(184,145,46,0.15), rgba(184,145,46,0.05));
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--papel);
+  margin-top: 0.5rem;
+  display: none;
+  animation: analiseAparecer 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.resposta-analise.show { display: block; }
+
+@keyframes analiseAparecer {
+  from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.resposta-analise.mentira {
+  border-left-color: var(--sangue-vivo);
+  background: linear-gradient(135deg, rgba(139,26,26,0.25), rgba(139,26,26,0.08));
+  box-shadow: 0 5px 25px rgba(194,59,59,0.3);
+}
+
+.resposta-analise.verdade {
+  border-left-color: var(--verde);
+  background: linear-gradient(135deg, rgba(45,90,45,0.25), rgba(45,90,45,0.08));
+  box-shadow: 0 5px 25px rgba(45,90,45,0.3);
+}
+
+.resposta-analise .analise-titulo {
+  font-family: var(--font-titulo);
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.resposta-analise.mentira .analise-titulo { color: var(--sangue-claro); }
+.resposta-analise.verdade .analise-titulo { color: #9fdf9f; }
+.resposta-analise .analise-titulo { color: var(--dourado); }
+
+/* ===== LOG ===== */
+.int-log {
+  margin-top: 1.2rem;
+  border-top: 2px dashed rgba(139,26,26,0.3);
+  padding-top: 1rem;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.int-log-titulo {
+  font-size: 0.75rem;
+  color: rgba(232,220,196,0.6);
+  letter-spacing: 3px;
+  margin-bottom: 0.7rem;
+  font-family: var(--font-titulo);
+}
+
+.int-log-entrada {
+  font-size: 0.72rem;
+  padding: 0.4rem 0;
+  color: rgba(232,220,196,0.8);
+  border-bottom: 1px dotted rgba(139,26,26,0.2);
+  font-family: var(--font-tech);
+  display: flex;
+  gap: 0.6rem;
+  animation: logAparecer 0.3s ease;
+}
+
+@keyframes logAparecer {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.int-log-entrada .hora { color: var(--dourado); flex-shrink: 0; }
+.int-log-entrada.mentira .resultado { color: var(--sangue-claro); }
+.int-log-entrada.verdade .resultado { color: #9fdf9f; }
+
+/* ===== BOTÃO PRESSIONAR ===== */
+.pressionar-box {
+  background: linear-gradient(135deg, rgba(139,26,26,0.25), rgba(139,26,26,0.08));
+  border: 2px dashed var(--sangue-claro);
+  padding: 1.3rem;
+  margin-top: 1.2rem;
+  text-align: center;
+  border-radius: 6px;
+  animation: pressaoEntrando 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes pressaoEntrando {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.pressionar-box h4 {
+  font-family: var(--font-titulo);
+  color: var(--sangue-vivo);
+  font-size: 1rem;
+  letter-spacing: 3px;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 15px rgba(230,57,70,0.7);
+}
+
+.pressionar-box p {
+  color: rgba(232,220,196,0.75);
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.btn-pressionar {
+  background: linear-gradient(135deg, var(--sangue), var(--sangue-vivo));
+  color: var(--papel);
+  border: none;
+  padding: 0.9rem 1.8rem;
+  font-family: var(--font-titulo);
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  animation: pulsarPerigo 1.5s infinite;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-pressionar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.btn-pressionar:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-pressionar:hover {
+  background: linear-gradient(135deg, var(--sangue-vivo), #ff5555);
+  letter-spacing: 5px;
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(230,57,70,0.8);
+}
+
+.btn-pressionar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  animation: none;
+}
+
+@keyframes pulsarPerigo {
+  0%, 100% { box-shadow: 0 0 15px rgba(139,26,26,0.5); }
+  50% { box-shadow: 0 0 40px rgba(230,57,70,1); }
+}
+
+/* ===== INDICADOR DE MENTIRA ===== */
+.indicador-mentira {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(135deg, rgba(139,26,26,0.95), rgba(90,15,15,0.95));
+  border: 2px solid var(--sangue-vivo);
+  color: var(--papel);
+  padding: 0.6rem 1.2rem;
+  font-family: var(--font-titulo);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  display: none;
+  z-index: 10;
+  animation: aparecerMentira 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 0 40px rgba(230,57,70,0.8),
+    inset 0 0 20px rgba(230,57,70,0.3);
+  border-radius: 4px;
+  text-shadow: 0 0 15px rgba(255,100,100,0.9);
+}
+
+.indicador-mentira.show {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@keyframes aparecerMentira {
+  from { transform: translateX(150px) rotate(15deg); opacity: 0; }
+  to { transform: translateX(0) rotate(0); opacity: 1; }
+}
+
+/* ===== MODO PRESSÃO ===== */
+.interrogatorio-box.modo-pressao {
+  animation: sacudirPressao 0.5s infinite;
+  border-color: var(--sangue-vivo);
+  box-shadow:
+    0 0 120px rgba(230,57,70,1),
+    inset 0 0 80px rgba(230,57,70,0.15);
+}
+
+@keyframes sacudirPressao {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25% { transform: translate(-3px, 2px) rotate(-0.3deg); }
+  50% { transform: translate(3px, -2px) rotate(0.3deg); }
+  75% { transform: translate(-2px, 3px) rotate(-0.2deg); }
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 700px) {
+  .interrogatorio-header { padding: 0.9rem; }
+  .interrogatorio-titulo { font-size: 0.85rem; letter-spacing: 2px; }
+  .interrogatorio-conteudo { padding: 1rem; gap: 1rem; }
+  .suspeito-avatar-grande { width: 130px; height: 130px; font-size: 4rem; }
+  .dialogo-texto { font-size: 0.88rem; padding: 1rem 1rem 1rem 2rem; min-height: 90px; }
+  .dialogo-texto::before, .dialogo-texto::after { font-size: 2.5rem; }
+  .pergunta-btn { font-size: 0.78rem; padding: 0.75rem 0.9rem; }
+  .btn-pressionar { font-size: 0.78rem; padding: 0.7rem 1.4rem; }
+  .suspeito-status { padding: 0.8rem; }
+}

@@ -1,0 +1,386 @@
+/* ============================================================
+   ARQUIVO MORTO v5.0 — CARTAS DE HABILIDADE
+   ============================================================ */
+
+/* ===== BARRA DE CARTAS NO CASO ===== */
+.barra-cartas {
+  display: flex;
+  gap: 0.6rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(20,10,30,0.9), rgba(10,5,20,0.9));
+  border: 2px solid #7a3aa5;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+  align-items: center;
+  min-height: 100px;
+}
+
+.barra-cartas-titulo {
+  font-family: var(--font-titulo);
+  color: #cc99ff;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  padding-right: 0.5rem;
+  border-right: 1px solid rgba(122,58,165,0.4);
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.carta-habilidade {
+  min-width: 90px;
+  padding: 0.7rem 0.5rem;
+  background: linear-gradient(135deg, #1a0a2a, #2a1a3a);
+  border: 2px solid #7a3aa5;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.carta-habilidade:hover:not(.usada):not(.bloqueada) {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 15px 30px rgba(122,58,165,0.6), 0 0 20px rgba(204,153,255,0.4);
+  border-color: #cc99ff;
+}
+
+.carta-habilidade.usada {
+  opacity: 0.3;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.carta-habilidade.bloqueada {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: #444;
+}
+
+.carta-habilidade-icone {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.3rem;
+  filter: drop-shadow(0 0 8px #cc99ff);
+}
+
+.carta-habilidade-nome {
+  font-family: var(--font-titulo);
+  color: #cc99ff;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.2rem;
+  line-height: 1.2;
+}
+
+.carta-habilidade-qtd {
+  font-family: var(--font-tech);
+  color: var(--dourado);
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+/* ===== MODAL DE USO DE CARTA ===== */
+.modal-carta {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s;
+}
+
+.modal-carta-box {
+  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1a0a2a, #0a0510);
+  border: 3px solid #7a3aa5;
+  border-radius: 16px;
+  box-shadow: 0 30px 80px rgba(122,58,165,0.6);
+  text-align: center;
+  animation: zoomIn 0.4s;
+  position: relative;
+}
+
+.modal-carta-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 3px;
+  background: linear-gradient(135deg, #cc99ff, #7a3aa5, #cc99ff);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: girarBorda 3s linear infinite;
+}
+
+@keyframes girarBorda {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.modal-carta-icone {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 25px #cc99ff);
+  animation: pulsarIcone 1.5s infinite;
+}
+
+.modal-carta-titulo {
+  font-family: var(--font-titulo);
+  color: #cc99ff;
+  font-size: 1.5rem;
+  letter-spacing: 4px;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(204,153,255,0.6);
+}
+
+.modal-carta-desc {
+  color: rgba(232,220,196,0.85);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(122,58,165,0.1);
+  border-left: 3px solid #7a3aa5;
+  border-radius: 4px;
+}
+
+.modal-carta-botoes {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+.btn-carta {
+  background: linear-gradient(135deg, #7a3aa5, #a05ac5);
+  color: white;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  font-family: var(--font-titulo);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 6px;
+  flex: 1;
+}
+
+.btn-carta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(122,58,165,0.6);
+  letter-spacing: 3px;
+}
+
+.btn-carta.cancelar {
+  background: transparent;
+  border: 2px solid #666;
+  color: #aaa;
+}
+
+.btn-carta.cancelar:hover {
+  background: #333;
+  color: white;
+  box-shadow: none;
+}
+
+/* ===== TELA DE COLEÇÃO DE CARTAS ===== */
+#screen-cartas-hab {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background: radial-gradient(ellipse at center, #1a0a2a 0%, #050208 100%);
+}
+#screen-cartas-hab.active { display: flex; }
+
+.cartas-hab-box {
+  max-width: 900px;
+  width: 100%;
+  padding: 2rem;
+  border: 2px solid #7a3aa5;
+  background: rgba(10,5,20,0.95);
+  box-shadow: 0 0 60px rgba(122,58,165,0.5);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.cartas-hab-titulo {
+  font-family: var(--font-titulo);
+  color: #cc99ff;
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 25px rgba(204,153,255,0.6);
+}
+
+.cartas-hab-sub {
+  text-align: center;
+  color: rgba(232,220,196,0.6);
+  font-style: italic;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+}
+
+.cartas-hab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.carta-hab-item {
+  padding: 1.2rem;
+  background: linear-gradient(135deg, #1a0a2a, #2a1a3a);
+  border: 2px solid #7a3aa5;
+  border-radius: 10px;
+  text-align: center;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.carta-hab-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(122,58,165,0.5);
+  border-color: #cc99ff;
+}
+
+.carta-hab-item.bloqueada {
+  opacity: 0.4;
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+
+.carta-hab-item.bloqueada::after {
+  content: "🔒";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  background: rgba(0,0,0,0.7);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.carta-hab-icone {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 10px #cc99ff);
+}
+
+.carta-hab-nome {
+  font-family: var(--font-titulo);
+  color: #cc99ff;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.3rem;
+}
+
+.carta-hab-desc {
+  font-size: 0.7rem;
+  color: rgba(232,220,196,0.7);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.carta-hab-qtd {
+  display: inline-block;
+  padding: 3px 10px;
+  background: linear-gradient(135deg, #7a3aa5, #cc99ff);
+  color: #0a0510;
+  font-family: var(--font-tech);
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 12px;
+}
+
+/* ===== LOOT DE CARTA ===== */
+.carta-loot-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s;
+}
+
+.carta-loot-box {
+  max-width: 400px;
+  width: 100%;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #1a0a2a, #0a0510);
+  border: 3px solid #cc99ff;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 80px rgba(204,153,255,0.6);
+  animation: zoomIn 0.5s;
+}
+
+.carta-loot-titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1rem;
+  letter-spacing: 4px;
+  margin-bottom: 1rem;
+}
+
+.carta-loot-icone {
+  font-size: 5rem;
+  display: block;
+  margin: 1rem 0;
+  animation: flutuarIcone 2s infinite;
+}
+
+@keyframes flutuarIcone {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.carta-loot-nome {
+  font-family: var(--font-titulo);
+  color: #cc99ff;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(204,153,255,0.8);
+}
+
+.carta-loot-desc {
+  color: rgba(232,220,196,0.8);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 700px) {
+  .cartas-hab-box { padding: 1.2rem; }
+  .cartas-hab-titulo { font-size: 1.3rem; letter-spacing: 2px; }
+  .carta-habilidade { min-width: 75px; padding: 0.5rem 0.4rem; }
+  .carta-habilidade-icone { font-size: 1.5rem; }
+  .carta-habilidade-nome { font-size: 0.55rem; }
+  .modal-carta { padding: 1rem; }
+  .modal-carta-box { padding: 1.5rem; }
+}

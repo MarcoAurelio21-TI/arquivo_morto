@@ -1,0 +1,144 @@
+/* ============================================================
+   ARQUIVO MORTO v6.0 — TUTORIAL INTERATIVO
+   ============================================================ */
+
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+}
+
+.tutorial-destaque {
+  position: fixed;
+  border: 3px solid #ffcc66;
+  border-radius: 8px;
+  box-shadow: 
+    0 0 0 9999px rgba(0,0,0,0.75),
+    0 0 30px rgba(255,204,102,0.8),
+    inset 0 0 30px rgba(255,204,102,0.3);
+  pointer-events: none;
+  transition: all 0.3s ease;
+  animation: pulsarDestaque 1.5s infinite;
+  z-index: 100000;
+}
+
+@keyframes pulsarDestaque {
+  0%, 100% { box-shadow: 0 0 0 9999px rgba(0,0,0,0.75), 0 0 30px rgba(255,204,102,0.8), inset 0 0 30px rgba(255,204,102,0.3); }
+  50% { box-shadow: 0 0 0 9999px rgba(0,0,0,0.75), 0 0 50px rgba(255,204,102,1), inset 0 0 50px rgba(255,204,102,0.5); }
+}
+
+.tutorial-box {
+  position: fixed;
+  max-width: 400px;
+  width: 90%;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(20,15,10,0.98), rgba(10,5,0,0.98));
+  border: 3px solid #ffcc66;
+  border-radius: 12px;
+  box-shadow: 
+    0 20px 60px rgba(0,0,0,0.9),
+    0 0 40px rgba(255,204,102,0.5);
+  pointer-events: auto;
+  z-index: 100001;
+  animation: aparecerTutorial 0.4s ease;
+}
+
+@keyframes aparecerTutorial {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.tutorial-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px dashed rgba(255,204,102,0.4);
+}
+
+.tutorial-icone {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.tutorial-titulo {
+  flex: 1;
+  font-family: var(--font-titulo);
+  color: #ffcc66;
+  font-size: 1rem;
+  letter-spacing: 2px;
+}
+
+.tutorial-passo {
+  font-size: 0.7rem;
+  color: rgba(255,204,102,0.7);
+  font-family: var(--font-tech);
+  padding: 2px 8px;
+  background: rgba(255,204,102,0.15);
+  border-radius: 10px;
+}
+
+.tutorial-texto {
+  color: var(--papel);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.tutorial-acoes {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.btn-tutorial-pular {
+  background: transparent;
+  border: 1px solid rgba(232,220,196,0.3);
+  color: rgba(232,220,196,0.6);
+  padding: 0.6rem 1rem;
+  font-family: var(--font-main);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.btn-tutorial-pular:hover {
+  border-color: rgba(232,220,196,0.6);
+  color: var(--papel);
+}
+
+.btn-tutorial-proximo {
+  background: linear-gradient(135deg, #ffcc66, #d4a83a);
+  color: #1a1410;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.btn-tutorial-proximo:hover {
+  background: linear-gradient(135deg, #ffed4e, #ffcc66);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255,204,102,0.5);
+}
+
+@media (max-width: 700px) {
+  .tutorial-box {
+    max-width: 95%;
+    padding: 1rem;
+  }
+  
+  .tutorial-titulo { font-size: 0.9rem; }
+  .tutorial-texto { font-size: 0.8rem; }
+  .tutorial-acoes { flex-direction: column; }
+  .btn-tutorial-pular, .btn-tutorial-proximo { width: 100%; }
+}

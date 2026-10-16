@@ -1,0 +1,523 @@
+/* ============================================================
+   ARQUIVO MORTO v5.0 — SISTEMA DE REPUTAÇÃO
+   ============================================================ */
+
+/* ===== HUD DE REPUTAÇÃO ===== */
+.hud-reputacao {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--dourado);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-family: var(--font-main);
+  color: var(--dourado);
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.hud-reputacao:hover {
+  background: rgba(184,145,46,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(184,145,46,0.4);
+}
+
+.hud-reputacao .rep-icone {
+  font-size: 1rem;
+}
+
+.hud-reputacao .rep-valor {
+  font-weight: bold;
+  color: var(--papel);
+}
+
+.hud-reputacao .rep-nivel {
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(184,145,46,0.2);
+}
+
+/* Cores por nível */
+.hud-reputacao.nivel-1 { border-color: #8a6a3a; }
+.hud-reputacao.nivel-1 .rep-nivel { background: rgba(138,106,58,0.3); color: #c9a86a; }
+
+.hud-reputacao.nivel-2 { border-color: #7a9aa5; }
+.hud-reputacao.nivel-2 .rep-nivel { background: rgba(122,154,165,0.3); color: #aaccee; }
+
+.hud-reputacao.nivel-3 { border-color: #7a3aa5; }
+.hud-reputacao.nivel-3 .rep-nivel { background: rgba(122,58,165,0.3); color: #cc99ff; }
+
+.hud-reputacao.nivel-4 { border-color: #d4a83a; }
+.hud-reputacao.nivel-4 .rep-nivel { background: rgba(212,168,58,0.3); color: #ffdd66; }
+
+.hud-reputacao.nivel-5 {
+  border-color: #ffed4e;
+  animation: pulsarLenda 2s infinite;
+}
+.hud-reputacao.nivel-5 .rep-nivel {
+  background: linear-gradient(90deg, #d4a83a, #ffed4e);
+  color: #1a1410;
+  font-weight: bold;
+}
+
+@keyframes pulsarLenda {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,237,78,0.4); }
+  50% { box-shadow: 0 0 25px rgba(255,237,78,0.9); }
+}
+
+/* ===== TELA DE REPUTAÇÃO ===== */
+#screen-reputacao {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background: radial-gradient(ellipse at center, #1a1410 0%, #0a0806 100%);
+}
+#screen-reputacao.active { display: flex; }
+
+.reputacao-box {
+  max-width: 800px;
+  width: 100%;
+  padding: 2rem;
+  border: 2px solid var(--dourado);
+  background: rgba(10,8,6,0.95);
+  box-shadow: 0 0 60px rgba(184,145,46,0.4);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.reputacao-titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(184,145,46,0.6);
+}
+
+.reputacao-sub {
+  text-align: center;
+  color: rgba(232,220,196,0.6);
+  font-style: italic;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+}
+
+/* ===== NÍVEL ATUAL ===== */
+.nivel-atual-box {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(184,145,46,0.15), rgba(139,26,26,0.1));
+  border: 2px solid var(--dourado);
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.nivel-atual-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(184,145,46,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.nivel-icone {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 20px rgba(184,145,46,0.6));
+  animation: flutuarNivel 3s infinite;
+}
+
+@keyframes flutuarNivel {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.nivel-nome {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.5rem;
+  letter-spacing: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.nivel-desc {
+  color: rgba(232,220,196,0.8);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto 1rem;
+}
+
+.nivel-bonus {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  background: rgba(45,90,45,0.3);
+  border-left: 3px solid var(--verde);
+  color: #9fdf9f;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+}
+
+/* ===== BARRA DE PROGRESSO ===== */
+.rep-progresso-box {
+  margin: 1.5rem 0;
+}
+
+.rep-progresso-label {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(232,220,196,0.7);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.rep-progresso-barra {
+  height: 24px;
+  background: rgba(0,0,0,0.4);
+  border: 2px solid rgba(184,145,46,0.4);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.rep-progresso-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b6a3a, #d4a83a, #ffed4e);
+  background-size: 200% 100%;
+  transition: width 0.8s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a1410;
+  font-weight: bold;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  animation: brilharProgresso 2s infinite;
+}
+
+@keyframes brilharProgresso {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* ===== LISTA DE NÍVEIS ===== */
+.niveis-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 2rem 0;
+}
+
+.nivel-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  background: rgba(255,255,255,0.03);
+  border-left: 3px solid rgba(139,26,26,0.4);
+  transition: all 0.3s;
+}
+
+.nivel-item.atual {
+  background: rgba(184,145,46,0.15);
+  border-left-color: var(--dourado);
+  box-shadow: 0 0 20px rgba(184,145,46,0.3);
+}
+
+.nivel-item.conquistado {
+  border-left-color: var(--verde);
+}
+
+.nivel-item.bloqueado {
+  opacity: 0.5;
+}
+
+.nivel-item-icone {
+  font-size: 1.5rem;
+  width: 40px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nivel-item-info {
+  flex: 1;
+}
+
+.nivel-item-nome {
+  font-family: var(--font-titulo);
+  color: var(--papel);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.2rem;
+}
+
+.nivel-item-req {
+  font-size: 0.7rem;
+  color: rgba(232,220,196,0.6);
+  font-family: var(--font-tech);
+}
+
+.nivel-item-status {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  letter-spacing: 1px;
+}
+
+.nivel-item-status.conquistado {
+  background: rgba(45,90,45,0.4);
+  color: #9fdf9f;
+}
+
+.nivel-item-status.atual {
+  background: rgba(184,145,46,0.4);
+  color: #ffdd66;
+  font-weight: bold;
+}
+
+.nivel-item-status.bloqueado {
+  background: rgba(100,100,100,0.3);
+  color: #aaa;
+}
+
+/* ===== ESTATÍSTICAS DE REPUTAÇÃO ===== */
+.rep-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.rep-stat {
+  padding: 1rem;
+  background: rgba(255,255,255,0.03);
+  border-left: 3px solid var(--dourado);
+  text-align: center;
+}
+
+.rep-stat-num {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.rep-stat-lbl {
+  font-size: 0.65rem;
+  color: rgba(232,220,196,0.7);
+  letter-spacing: 1px;
+  margin-top: 0.4rem;
+}
+
+.rep-stat-num.positivo { color: #9fdf9f; }
+.rep-stat-num.negativo { color: var(--sangue-claro); }
+
+/* ===== HISTÓRICO ===== */
+.rep-historico {
+  margin-top: 2rem;
+  border-top: 2px dashed rgba(184,145,46,0.3);
+  padding-top: 1.5rem;
+}
+
+.rep-historico-titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.rep-historico-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.rep-hist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  background: rgba(0,0,0,0.3);
+  border-left: 3px solid #666;
+  font-size: 0.75rem;
+  color: var(--papel);
+  transition: all 0.3s;
+}
+
+.rep-hist-item.positivo {
+  border-left-color: var(--verde);
+}
+
+.rep-hist-item.negativo {
+  border-left-color: var(--sangue-claro);
+}
+
+.rep-hist-item .motivo {
+  flex: 1;
+  padding-right: 1rem;
+}
+
+.rep-hist-item .valor {
+  font-family: var(--font-tech);
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.rep-hist-item.positivo .valor { color: #9fdf9f; }
+.rep-hist-item.negativo .valor { color: var(--sangue-claro); }
+
+.rep-hist-item .data {
+  font-size: 0.65rem;
+  color: rgba(232,220,196,0.4);
+  margin-left: 0.8rem;
+}
+
+/* ===== POPUP DE MUDANÇA DE NÍVEL ===== */
+.rep-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  z-index: 9999;
+  background: linear-gradient(135deg, rgba(20,15,10,0.98), rgba(10,5,0,0.98));
+  border: 3px solid var(--dourado);
+  border-radius: 16px;
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: 
+    0 30px 80px rgba(0,0,0,0.9),
+    0 0 80px rgba(184,145,46,0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 400px;
+  width: 90%;
+}
+
+.rep-popup.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+.rep-popup-icone {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: 1rem;
+  animation: pulsarIcone 1s infinite;
+}
+
+@keyframes pulsarIcone {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.rep-popup-titulo {
+  font-family: var(--font-titulo);
+  color: var(--dourado);
+  font-size: 1.3rem;
+  letter-spacing: 4px;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(184,145,46,0.8);
+}
+
+.rep-popup-nivel {
+  font-family: var(--font-titulo);
+  color: var(--papel);
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+}
+
+.rep-popup-bonus {
+  font-size: 0.85rem;
+  color: #9fdf9f;
+  line-height: 1.6;
+  padding: 0.8rem;
+  background: rgba(45,90,45,0.2);
+  border-left: 3px solid var(--verde);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.rep-popup-btn {
+  background: var(--dourado);
+  color: var(--tinta);
+  border: none;
+  padding: 0.8rem 2rem;
+  font-family: var(--font-titulo);
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 4px;
+}
+
+.rep-popup-btn:hover {
+  background: #ffed4e;
+  letter-spacing: 4px;
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255,237,78,0.6);
+}
+
+/* ===== NOTIFICAÇÃO DE REPUTAÇÃO ===== */
+.rep-notificacao {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  z-index: 9998;
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  font-family: var(--font-titulo);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  white-space: nowrap;
+}
+
+.rep-notificacao.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.rep-notificacao.positivo {
+  background: linear-gradient(135deg, #2d5a2d, #4a8a4a);
+  color: #dfffff;
+  border: 2px solid #9fdf9f;
+}
+
+.rep-notificacao.negativo {
+  background: linear-gradient(135deg, #8b1a1a, #c23b3b);
+  color: #ffe0e0;
+  border: 2px solid #ff9999;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 700px) {
+  .reputacao-box { padding: 1.2rem; }
+  .reputacao-titulo { font-size: 1.3rem; letter-spacing: 3px; }
+  .nivel-icone { font-size: 3rem; }
+  .nivel-nome { font-size: 1.2rem; }
+  .rep-popup { padding: 1.5rem; }
+  .rep-popup-icone { font-size: 3.5rem; }
+  .rep-popup-nivel { font-size: 1.3rem; }
+}

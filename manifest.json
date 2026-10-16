@@ -1,0 +1,28 @@
+{
+  "name": "ARQUIVO MORTO — O Jogo",
+  "short_name": "Arquivo Morto",
+  "description": "Jogo de dedução e mistério com 104 casos investigativos, NPCs persistentes, casos históricos, interrogatórios reais e ranking online",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0806",
+  "theme_color": "#8b1a1a",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["games", "entertainment", "puzzle"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230a0806'/%3E%3Ccircle cx='256' cy='256' r='220' fill='none' stroke='%238b1a1a' stroke-width='15'/%3E%3Ctext x='256' y='330' font-size='280' text-anchor='middle' fill='%23c23b3b'%3E🕵️%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230a0806'/%3E%3Ccircle cx='256' cy='256' r='220' fill='none' stroke='%23b8912e' stroke-width='15'/%3E%3Ctext x='256' y='330' font-size='280' text-anchor='middle' fill='%23d4a83a'%3E🕵️%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
+    }
+  ]
+}

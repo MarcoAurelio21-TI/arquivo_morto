@@ -1,2 +1,30 @@
-# arquivo_morto
-Jogo de dedução em HTML5/JS com 104 casos, 10 capítulos e 5 chefões. Tem interrogatório, julgamento, provas, cartas, reputação, NPCs, casos históricos, gerador com IA, ranking Firebase, missões, temporadas, speedrun, hardcore e temas. Bilíngue PT/EN, PWA offline com áudio noir procedural.
+# 🕵️ ARQUIVO MORTO — O Jogo v6.5
+
+Jogo de dedução e mistério com **104 casos investigativos**, NPCs persistentes, casos históricos, interrogatórios reais e ranking online.
+
+## 🎮 Como Jogar
+
+1. **NOVA INVESTIGAÇÃO** — Inicie uma nova jornada
+2. **CONTINUAR** — Retome o progresso salvo
+3. **TUTORIAL INTERATIVO** — Aprenda passo a passo
+4. **GERADOR DE CASOS** — Casos infinitos
+5. **CAMPANHA** — 10 capítulos com chefões
+6. **MISSÕES** — Diárias e semanais
+7. **TEMPORADAS** — Reset a cada 30 dias
+8. **LOOT BOX** — Caixas de recompensa
+9. **CARTAS** — Cartas de habilidade
+10. **REPUTAÇÃO** — Sua fama
+11. **RANKING ONLINE** — Firebase
+12. **TEMAS** — 6 temas desbloqueáveis
+
+## 🔑 Código de Acesso
+
+O código é **1994**.
+
+## 🛠️ Tecnologias
+
+HTML5, CSS3, JavaScript, Web Audio API, LocalStorage, PWA, Firebase, SVG Animado, Capacitor.
+
+## 📜 Licença
+
+MIT

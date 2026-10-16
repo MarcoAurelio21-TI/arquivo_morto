@@ -1,0 +1,11 @@
+{
+  "appId": "com.arquivomorto.jogo",
+  "appName": "Arquivo Morto",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": { "androidScheme": "https" },
+  "plugins": {
+    "PushNotifications": { "presentationOptions": ["badge", "sound", "alert"] },
+    "LocalNotifications": { "smallIcon": "ic_stat_icon", "iconColor": "#8b1a1a" }
+  }
+}

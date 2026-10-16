@@ -1,0 +1,340 @@
+/* ============================================================
+   ARQUIVO MORTO v8.0 — MODO SPEEDRUN
+   ============================================================ */
+
+.speedrun-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s;
+  backdrop-filter: blur(8px);
+}
+
+.speedrun-box {
+  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(135deg, #1a0a2a 0%, #0a0510 100%);
+  border: 3px solid #ffed4e;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.9),
+    0 0 80px rgba(255,237,78,0.5);
+  animation: zoomIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.speedrun-intro-icone,
+.speedrun-res-icone {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: 1rem;
+  animation: pulsarIcone 1.5s infinite;
+  filter: drop-shadow(0 0 25px #ffed4e);
+}
+
+.speedrun-box h2 {
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  color: #ffed4e;
+  font-size: 1.5rem;
+  letter-spacing: 5px;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 25px rgba(255,237,78,0.8);
+}
+
+.speedrun-regras {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  background: rgba(0,0,0,0.4);
+  border-left: 4px solid #ffed4e;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.speedrun-regras div {
+  color: var(--papel, #e8dcc4);
+  font-size: 0.85rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.speedrun-regras span {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.speedrun-caso-info {
+  padding: 0.9rem;
+  background: rgba(255,237,78,0.1);
+  border: 1px solid rgba(255,237,78,0.3);
+  border-radius: 6px;
+  color: var(--papel, #e8dcc4);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.speedrun-caso-info strong {
+  color: #ffed4e;
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  letter-spacing: 1px;
+}
+
+.speedrun-btn {
+  padding: 0.9rem 1.5rem;
+  border: none;
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  margin: 0.3rem;
+}
+
+.speedrun-btn.primario {
+  background: linear-gradient(135deg, #ffed4e, #d4a83a);
+  color: #1a1410;
+  font-weight: bold;
+  box-shadow: 0 5px 20px rgba(255,237,78,0.5);
+}
+
+.speedrun-btn.primario:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(255,237,78,0.8);
+  letter-spacing: 5px;
+}
+
+.speedrun-btn.secundario {
+  background: transparent;
+  border: 2px solid #666;
+  color: #ccc;
+}
+
+.speedrun-btn.secundario:hover {
+  background: #333;
+  color: white;
+}
+
+.speedrun-btn.cancelar {
+  background: transparent;
+  border: 2px solid var(--sangue, #8b1a1a);
+  color: var(--papel, #e8dcc4);
+}
+
+.speedrun-btn.cancelar:hover {
+  background: var(--sangue, #8b1a1a);
+  letter-spacing: 4px;
+}
+
+/* HUD fixo durante o jogo */
+.speedrun-hud {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9998;
+  background: linear-gradient(135deg, rgba(26,10,42,0.95), rgba(10,5,16,0.95));
+  border: 3px solid #ffed4e;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  text-align: center;
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.8),
+    0 0 40px rgba(255,237,78,0.4);
+  min-width: 140px;
+  animation: speedrunHUDEntrando 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes speedrunHUDEntrando {
+  from { transform: translateX(200px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.speedrun-hud-icone {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 10px #ffed4e);
+  animation: pulsarIcone 1s infinite;
+}
+
+.speedrun-hud-timer {
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  color: #ffed4e;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1;
+  margin: 0.3rem 0;
+  text-shadow: 0 0 20px rgba(255,237,78,0.9);
+}
+
+.speedrun-hud-label {
+  font-size: 0.6rem;
+  color: rgba(232,220,196,0.6);
+  letter-spacing: 2px;
+  margin-bottom: 0.6rem;
+}
+
+.speedrun-hud-barra {
+  height: 6px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(255,237,78,0.3);
+}
+
+.speedrun-hud-barra-fill {
+  height: 100%;
+  transition: width 1s linear, background 0.5s;
+  border-radius: 3px;
+}
+
+.speedrun-hud-sair {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--sangue, #8b1a1a);
+  border: 2px solid var(--sangue-claro, #c23b3b);
+  color: white;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.speedrun-hud-sair:hover {
+  transform: scale(1.2) rotate(90deg);
+  background: var(--sangue-claro, #c23b3b);
+}
+
+/* Resultado */
+.speedrun-resultado.vitoria {
+  border-color: #4a8a4a;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.9),
+    0 0 80px rgba(74,138,74,0.6);
+}
+
+.speedrun-resultado.vitoria h2 { color: #9fdf9f; text-shadow: 0 0 25px rgba(159,223,159,0.8); }
+
+.speedrun-resultado.derrota {
+  border-color: var(--sangue-claro, #c23b3b);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.9),
+    0 0 80px rgba(194,59,59,0.6);
+}
+
+.speedrun-resultado.derrota h2 { color: var(--sangue-claro, #c23b3b); text-shadow: 0 0 25px rgba(194,59,59,0.8); }
+
+.speedrun-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.speedrun-stat {
+  padding: 0.8rem 0.5rem;
+  background: rgba(0,0,0,0.4);
+  border-radius: 6px;
+  border-left: 3px solid rgba(255,237,78,0.3);
+}
+
+.speedrun-stat.destaque {
+  border-left-color: #ffed4e;
+  background: rgba(255,237,78,0.1);
+}
+
+.speedrun-stat span {
+  display: block;
+  color: rgba(232,220,196,0.6);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.3rem;
+}
+
+.speedrun-stat strong {
+  color: #ffed4e;
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  font-size: 1.3rem;
+  text-shadow: 0 0 15px rgba(255,237,78,0.6);
+}
+
+.speedrun-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.speedrun-acoes .speedrun-btn {
+  width: 100%;
+  margin: 0;
+}
+
+/* Ranking */
+.speedrun-ranking-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.speedrun-ranking-item {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr 1fr;
+  align-items: center;
+  padding: 0.7rem 0.9rem;
+  background: rgba(0,0,0,0.4);
+  border-left: 3px solid rgba(255,237,78,0.4);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--papel, #e8dcc4);
+}
+
+.speedrun-ranking-pos {
+  font-family: var(--font-titulo, 'Special Elite', serif);
+  color: #ffed4e;
+  font-size: 1.1rem;
+}
+
+.speedrun-ranking-pontos {
+  font-family: var(--font-tech, monospace);
+  color: #ffed4e;
+  font-weight: bold;
+}
+
+.speedrun-ranking-tempo {
+  font-family: var(--font-tech, monospace);
+  color: #9fdf9f;
+}
+
+.speedrun-ranking-data {
+  font-size: 0.7rem;
+  color: rgba(232,220,196,0.5);
+  text-align: right;
+}
+
+.speedrun-ranking-vazio {
+  text-align: center;
+  padding: 2rem;
+  color: rgba(232,220,196,0.5);
+  font-style: italic;
+}
+
+@media (max-width: 700px) {
+  .speedrun-box { padding: 1.5rem 1.2rem; }
+  .speedrun-box h2 { font-size: 1.2rem; letter-spacing: 3px; }
+  .speedrun-intro-icone, .speedrun-res-icone { font-size: 3.5rem; }
+  .speedrun-hud { top: 75px; right: 10px; padding: 0.7rem 0.9rem; min-width: 110px; }
+  .speedrun-hud-timer { font-size: 1.5rem; }
+  .speedrun-ranking-item { grid-template-columns: 30px 1fr 1fr; font-size: 0.75rem; }
+  .speedrun-ranking-data { display: none; }
+}

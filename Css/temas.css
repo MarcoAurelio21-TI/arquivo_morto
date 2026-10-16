@@ -1,0 +1,91 @@
+/* ============================================================
+   TEMAS DESBLOQUEÁVEIS
+   ============================================================ */
+
+/* TEMA NOIR CLÁSSICO (padrão) */
+body[data-tema="noir"] {
+  --papel: #e8dcc4;
+  --tinta: #1a1410;
+  --sangue: #8b1a1a;
+  --sangue-claro: #c23b3b;
+  --dourado: #b8912e;
+  --sidebar-bg: #12100d;
+}
+body[data-tema="noir"] { background: radial-gradient(ellipse at center, #1a1410 0%, #0a0806 100%); }
+
+/* TEMA SANGUE FRIO */
+body[data-tema="sangue"] {
+  --papel: #e0d5d5;
+  --tinta: #0a0000;
+  --sangue: #d40000;
+  --sangue-claro: #ff1a1a;
+  --dourado: #ff6b6b;
+  --sidebar-bg: #0a0000;
+}
+body[data-tema="sangue"] { background: radial-gradient(ellipse at center, #2a0000 0%, #0a0000 100%); }
+body[data-tema="sangue"] .scanlines { background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(212,0,0,0.05) 2px, rgba(212,0,0,0.05) 3px); }
+
+/* TEMA CYBERPUNK */
+body[data-tema="cyber"] {
+  --papel: #d5f4ff;
+  --tinta: #0a0a1a;
+  --sangue: #ff0080;
+  --sangue-claro: #ff40a0;
+  --dourado: #00ffcc;
+  --sidebar-bg: #0a0a1a;
+  --font-main: 'Share Tech Mono', monospace;
+  --font-titulo: 'Share Tech Mono', monospace;
+}
+body[data-tema="cyber"] { background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2a 100%); }
+body[data-tema="cyber"] .content-inner { border: 2px solid var(--sangue); box-shadow: 0 0 40px rgba(255,0,128,0.4); }
+body[data-tema="cyber"] .pasta { border-left-color: var(--sangue); }
+body[data-tema="cyber"] .btn-menu:hover { box-shadow: 0 0 30px var(--sangue), 0 0 60px var(--dourado); }
+body[data-tema="cyber"] .scanlines { background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,204,0.05) 2px, rgba(0,255,204,0.05) 4px); }
+
+/* TEMA VHS ANOS 80 */
+body[data-tema="vhs"] {
+  --papel: #f0e0d0;
+  --tinta: #1a0a1a;
+  --sangue: #d43b8a;
+  --sangue-claro: #ff6bc4;
+  --dourado: #4ae0d4;
+  --sidebar-bg: #1a0a1a;
+  --font-main: 'VT323', monospace;
+  --font-titulo: 'VT323', monospace;
+}
+body[data-tema="vhs"] { background: linear-gradient(135deg, #1a0a1a 0%, #2a0a2a 100%); }
+body[data-tema="vhs"] .content-inner { filter: contrast(1.1) saturate(1.2); }
+body[data-tema="vhs"] .scanlines { background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(212,59,138,0.08) 2px, rgba(74,224,212,0.08) 4px); }
+body[data-tema="vhs"] h1, body[data-tema="vhs"] h2, body[data-tema="vhs"] h3 { text-shadow: 2px 2px 0 var(--sangue), -2px -2px 0 var(--dourado); }
+
+/* TEMA SHERLOCK VINTAGE */
+body[data-tema="sherlock"] {
+  --papel: #f4ecd8;
+  --tinta: #2a1810;
+  --sangue: #5a3a1a;
+  --sangue-claro: #8a5a2a;
+  --dourado: #c49a3a;
+  --sidebar-bg: #2a1810;
+}
+body[data-tema="sherlock"] { background: linear-gradient(135deg, #3a2818 0%, #1a1008 100%); }
+body[data-tema="sherlock"] .content-inner { background-image: 
+  radial-gradient(circle at 20% 30%, rgba(90,58,26,0.08) 0%, transparent 50%),
+  radial-gradient(circle at 80% 70%, rgba(90,58,26,0.05) 0%, transparent 50%);
+}
+body[data-tema="sherlock"] .pasta { background: #f0e4c8; border-left-color: var(--sangue); }
+
+/* TEMA LENDA */
+body[data-tema="lenda"] {
+  --papel: #fff8e0;
+  --tinta: #0a0a0a;
+  --sangue: #d4a83a;
+  --sangue-claro: #f4d03f;
+  --dourado: #ffed4e;
+  --sidebar-bg: #0a0a0a;
+}
+body[data-tema="lenda"] { background: radial-gradient(ellipse at center, #2a2000 0%, #0a0800 100%); }
+body[data-tema="lenda"] .content-inner { box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 60px rgba(212,168,58,0.3); }
+body[data-tema="lenda"] .btn-menu { border-color: var(--dourado); }
+body[data-tema="lenda"] .btn-menu:hover { box-shadow: 0 0 30px var(--dourado), 0 0 60px rgba(212,168,58,0.5); }
+body[data-tema="lenda"] .topbar { border-bottom-color: var(--dourado); }
+body[data-tema="lenda"] .topbar h1 { text-shadow: 0 0 20px var(--dourado); }

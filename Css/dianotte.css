@@ -1,0 +1,658 @@
+/* ============================================================
+   ARQUIVO MORTO v6.0 — MODO DIA/NOITE PREMIUM
+   ============================================================ */
+
+/* ===== VARIÁVEIS POR PERÍODO ===== */
+body[data-periodo="manha"] {
+  --ceu-1: #f5d78a;
+  --ceu-2: #e8b96a;
+  --ceu-3: #b8912e;
+  --luz-ambiente: rgba(255, 220, 150, 0.15);
+  --sombra-ambiente: rgba(0, 0, 0, 0.15);
+}
+
+body[data-periodo="tarde"] {
+  --ceu-1: #e8dcc4;
+  --ceu-2: #c9b896;
+  --ceu-3: #8b7a5a;
+  --luz-ambiente: rgba(255, 255, 255, 0.1);
+  --sombra-ambiente: rgba(0, 0, 0, 0.2);
+}
+
+body[data-periodo="noite"] {
+  --ceu-1: #8b4a3a;
+  --ceu-2: #5a2a2a;
+  --ceu-3: #2a1a1a;
+  --luz-ambiente: rgba(255, 150, 80, 0.1);
+  --sombra-ambiente: rgba(0, 0, 0, 0.4);
+}
+
+body[data-periodo="madrugada"] {
+  --ceu-1: #1a1a3a;
+  --ceu-2: #0a0a2a;
+  --ceu-3: #050510;
+  --luz-ambiente: rgba(100, 150, 255, 0.08);
+  --sombra-ambiente: rgba(0, 0, 0, 0.6);
+}
+
+/* ===== FUNDO DINÂMICO DO MENU ===== */
+#screen-menu {
+  transition: background 2s ease;
+}
+
+body[data-periodo="manha"] #screen-menu {
+  background:
+    radial-gradient(ellipse at top, #b8912e 0%, #0a0806 70%),
+    linear-gradient(180deg, #f5d78a 0%, #0a0806 100%);
+}
+
+body[data-periodo="tarde"] #screen-menu {
+  background:
+    radial-gradient(ellipse at top, #8b7a5a 0%, #0a0806 70%),
+    linear-gradient(180deg, #e8dcc4 0%, #0a0806 100%);
+}
+
+body[data-periodo="noite"] #screen-menu {
+  background:
+    radial-gradient(ellipse at top, #5a2a2a 0%, #0a0806 70%),
+    linear-gradient(180deg, #8b4a3a 0%, #0a0806 100%);
+}
+
+body[data-periodo="madrugada"] #screen-menu {
+  background:
+    radial-gradient(ellipse at top, #1a1a3a 0%, #0a0806 70%),
+    linear-gradient(180deg, #0a0a2a 0%, #050510 100%);
+}
+
+/* ============================================================
+   BOTÃO DE PERÍODO PREMIUM
+   ============================================================ */
+.btn-periodo-global {
+  position: fixed;
+  top: 130px;
+  left: 20px;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.6rem 1rem 0.6rem 0.8rem;
+
+  background:
+    linear-gradient(135deg,
+      rgba(30,30,30,0.95) 0%,
+      rgba(10,10,10,0.95) 100%);
+  color: var(--papel);
+
+  border: 2px solid var(--periodo-cor, var(--dourado));
+  border-radius: 25px;
+
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 5px 20px rgba(0,0,0,0.5),
+    0 0 15px rgba(184,145,46,0.2),
+    inset 0 0 15px rgba(255,255,255,0.05);
+
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Brilho que percorre o botão no hover */
+.btn-periodo-global::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.15) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+  pointer-events: none;
+}
+
+.btn-periodo-global:hover::before {
+  transform: translateX(100%);
+}
+
+/* Anel de progresso do dia (borda circular animada) */
+.btn-periodo-global::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 28px;
+  background: conic-gradient(
+    var(--periodo-cor, var(--dourado)) var(--progresso-dia, 0%),
+    transparent var(--progresso-dia, 0%)
+  );
+  opacity: 0.35;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.btn-periodo-global:hover::after {
+  opacity: 0.7;
+}
+
+.btn-periodo-global:hover {
+  background:
+    linear-gradient(135deg,
+      var(--periodo-cor, var(--dourado)) 0%,
+      var(--periodo-cor-sec, var(--dourado)) 100%);
+  color: var(--tinta);
+  transform: translateX(-3px) scale(1.05);
+  letter-spacing: 3px;
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.6),
+    0 0 30px var(--periodo-cor, var(--dourado)),
+    inset 0 0 20px rgba(255,255,255,0.2);
+}
+
+.btn-periodo-global:active {
+  transform: scale(0.98);
+}
+
+.btn-periodo-global:hover .periodo-icone {
+  transform: rotate(360deg) scale(1.2);
+}
+
+.btn-periodo-global:hover .periodo-seta {
+  transform: rotate(180deg);
+}
+
+/* Ícone do período */
+.periodo-icone {
+  font-size: 1.1rem;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  filter: drop-shadow(0 0 6px var(--periodo-cor, var(--dourado)));
+}
+
+/* Texto */
+.periodo-texto {
+  font-family: var(--font-titulo);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(0,0,0,0.6);
+}
+
+/* Seta indicadora */
+.periodo-seta {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  transition: transform 0.3s;
+}
+
+/* ============================================================
+   MENU DE SELEÇÃO DE PERÍODO
+   ============================================================ */
+.menu-periodo {
+  position: fixed;
+  z-index: 10000;
+
+  min-width: 280px;
+  padding: 0.8rem;
+
+  background:
+    linear-gradient(135deg,
+      rgba(15,12,10,0.98) 0%,
+      rgba(5,3,2,0.99) 100%);
+  border: 2px solid var(--dourado);
+  border-radius: 12px;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.9),
+    0 0 40px rgba(184,145,46,0.3),
+    inset 0 0 20px rgba(184,145,46,0.05);
+
+  animation: menuPeriodoEntrar 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left center;
+}
+
+.menu-periodo.fechando {
+  animation: menuPeriodoSair 0.2s ease forwards;
+}
+
+@keyframes menuPeriodoEntrar {
+  from {
+    opacity: 0;
+    transform: translateX(-15px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes menuPeriodoSair {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-15px) scale(0.95);
+  }
+}
+
+.menu-periodo-titulo {
+  font-family: var(--font-titulo);
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--dourado);
+  text-align: center;
+  padding: 0.4rem 0 0.8rem;
+  border-bottom: 1px dashed rgba(184,145,46,0.3);
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 10px rgba(184,145,46,0.5);
+}
+
+/* Item do menu */
+.menu-periodo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(184,145,46,0.15);
+  border-left: 3px solid transparent;
+  border-radius: 6px;
+
+  color: var(--papel);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+.menu-periodo-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255,255,255,0.08),
+    transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.menu-periodo-item:hover::before {
+  transform: translateX(100%);
+}
+
+.menu-periodo-item:hover {
+  background: rgba(184,145,46,0.15);
+  border-left-color: var(--item-cor, var(--dourado));
+  padding-left: 1.1rem;
+  transform: translateX(4px);
+  box-shadow:
+    0 5px 20px rgba(0,0,0,0.4),
+    0 0 15px rgba(184,145,46,0.2);
+}
+
+.menu-periodo-item.ativo {
+  background: linear-gradient(135deg,
+    rgba(184,145,46,0.2),
+    rgba(139,26,26,0.1));
+  border-left-color: var(--item-cor, var(--dourado));
+  box-shadow:
+    0 0 20px rgba(184,145,46,0.3),
+    inset 0 0 15px rgba(184,145,46,0.05);
+}
+
+.menu-periodo-icone {
+  font-size: 1.4rem;
+  filter: drop-shadow(0 0 6px var(--item-cor, var(--dourado)));
+  transition: transform 0.3s;
+}
+
+.menu-periodo-item:hover .menu-periodo-icone {
+  transform: scale(1.15) rotate(-8deg);
+}
+
+.menu-periodo-info {
+  flex: 1;
+}
+
+.menu-periodo-nome {
+  font-family: var(--font-titulo);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: var(--papel);
+  margin-bottom: 0.15rem;
+}
+
+.menu-periodo-item.ativo .menu-periodo-nome {
+  color: var(--item-cor, var(--dourado));
+}
+
+.menu-periodo-horario {
+  font-family: var(--font-tech);
+  font-size: 0.65rem;
+  color: rgba(232,220,196,0.5);
+  letter-spacing: 1px;
+}
+
+.menu-periodo-check {
+  font-size: 1.2rem;
+  color: var(--item-cor, var(--dourado));
+  font-weight: bold;
+  animation: checkPulse 1.5s infinite;
+}
+
+@keyframes checkPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+/* Barra de progresso do período */
+.menu-periodo-progresso {
+  width: 40px;
+  height: 4px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(184,145,46,0.2);
+}
+
+.menu-periodo-progresso-fill {
+  height: 100%;
+  background: linear-gradient(90deg,
+    var(--item-cor, var(--dourado)),
+    rgba(255,255,255,0.8));
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px var(--item-cor, var(--dourado));
+}
+
+/* Rodapé do menu */
+.menu-periodo-rodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed rgba(184,145,46,0.2);
+
+  font-size: 0.65rem;
+  color: rgba(232,220,196,0.6);
+  letter-spacing: 1px;
+}
+
+.menu-periodo-auto {
+  font-family: var(--font-tech);
+}
+
+.menu-periodo-auto-btn {
+  background: transparent;
+  border: 1px solid rgba(184,145,46,0.4);
+  color: var(--dourado);
+  padding: 0.3rem 0.7rem;
+  font-family: var(--font-main);
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.menu-periodo-auto-btn:hover {
+  background: var(--dourado);
+  color: var(--tinta);
+  box-shadow: 0 0 15px rgba(184,145,46,0.5);
+}
+
+/* ============================================================
+   ESTRELAS MELHORADAS
+   ============================================================ */
+.estrelas-noite {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+  overflow: hidden;
+}
+
+body[data-periodo="madrugada"] .estrelas-noite,
+body[data-periodo="noite"] .estrelas-noite {
+  opacity: 1;
+}
+
+.estrelas-noite .estrela {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: piscarEstrela 3s infinite;
+  box-shadow: 0 0 4px white;
+}
+
+.estrelas-noite .estrela.brilhante {
+  width: 3px;
+  height: 3px;
+  box-shadow:
+    0 0 6px white,
+    0 0 12px rgba(200,220,255,0.8);
+}
+
+@keyframes piscarEstrela {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* Estrela cadente */
+.estrela-cadente {
+  position: absolute;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.9) 50%,
+    rgba(255,255,255,0) 100%);
+  border-radius: 50%;
+  transform: rotate(-45deg);
+  animation: cairEstrela 2s ease-out forwards;
+  box-shadow: 0 0 20px rgba(200,220,255,0.8);
+  pointer-events: none;
+}
+
+@keyframes cairEstrela {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-45deg) scaleX(0.3);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(30px, 30px) rotate(-45deg) scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(300px, 300px) rotate(-45deg) scaleX(0.5);
+  }
+}
+
+/* ============================================================
+   MENSAGEM ESPECIAL MADRUGADA
+   ============================================================ */
+.mensagem-madrugada {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  z-index: 9995;
+
+  background: linear-gradient(135deg,
+    rgba(10,10,40,0.98),
+    rgba(5,5,20,0.98));
+  color: #aaccff;
+  border: 2px solid #4466aa;
+  border-radius: 12px;
+
+  padding: 2rem 2.5rem;
+  max-width: 500px;
+  text-align: center;
+
+  font-family: var(--font-titulo);
+  font-size: 1rem;
+  line-height: 1.8;
+  letter-spacing: 1px;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.9),
+    0 0 60px rgba(70,100,200,0.3);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mensagem-madrugada.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+.mensagem-madrugada .icone {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+  animation: flutuarLua 3s infinite;
+}
+
+@keyframes flutuarLua {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.mensagem-madrugada .titulo {
+  color: #ffcc66;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  margin-bottom: 0.8rem;
+  text-shadow: 0 0 15px rgba(255,204,102,0.5);
+}
+
+.mensagem-madrugada .texto {
+  color: #ccddff;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.mensagem-madrugada .btn-fechar-msg {
+  margin-top: 1.5rem;
+  background: transparent;
+  border: 2px solid #4466aa;
+  color: #aaccff;
+  padding: 0.6rem 1.5rem;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 6px;
+}
+
+.mensagem-madrugada .btn-fechar-msg:hover {
+  background: #4466aa;
+  color: white;
+  letter-spacing: 3px;
+}
+
+/* ============================================================
+   GARANTIAS DE CLIQUE (anti-bloqueio)
+   ============================================================ */
+.btn-periodo-global {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  touch-action: manipulation;
+}
+
+.btn-periodo-global * {
+  pointer-events: none !important;
+}
+
+.scanlines,
+.scanlines::before,
+.scanlines::after,
+body::before,
+body::after,
+.flash,
+.particles,
+.particle,
+.particle.fumaca {
+  pointer-events: none !important;
+}
+
+body:has(.interrogatorio-overlay.ativo) .btn-periodo-global {
+  display: none !important;
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 900px) {
+  .btn-periodo-global {
+    top: 110px;
+    left: 10px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.65rem;
+  }
+
+  .btn-periodo-global .periodo-texto {
+    font-size: 0.6rem;
+  }
+
+  .menu-periodo {
+    min-width: 240px;
+    top: auto !important;
+    bottom: 20px !important;
+    left: 10px !important;
+    right: 10px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .mensagem-madrugada {
+    padding: 1.5rem;
+    font-size: 0.9rem;
+    margin: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .mensagem-madrugada .titulo { font-size: 1rem; }
+  .mensagem-madrugada .texto { font-size: 0.8rem; }
+
+  .btn-periodo-global {
+    top: 68px;
+    left: 8px;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+  }
+
+  .periodo-icone { font-size: 0.9rem; }
+  .periodo-seta { display: none; }
+}

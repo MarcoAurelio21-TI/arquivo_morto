@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#8b1a1a">
+<title>ARQUIVO MORTO — O Jogo</title>
+<link rel="icon" href="data:,">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/temas.css">
+<link rel="stylesheet" href="css/cinematics.css">
+<link rel="stylesheet" href="css/mapa.css">
+<link rel="stylesheet" href="css/provas.css">
+<link rel="stylesheet" href="css/interrogatorio.css">
+<link rel="stylesheet" href="css/extras.css">
+<link rel="stylesheet" href="css/gerador.css">
+<link rel="stylesheet" href="css/ilustracoes.css">
+<link rel="stylesheet" href="css/dianotte.css">
+<link rel="stylesheet" href="css/cutscenes.css">
+<link rel="stylesheet" href="css/reputacao.css">
+<link rel="stylesheet" href="css/cartas.css">
+<link rel="stylesheet" href="css/julgamento.css">
+<link rel="stylesheet" href="css/npcs.css">
+<link rel="stylesheet" href="css/tutorial.css">
+<!-- ✅ v8.0: Novas features -->
+<link rel="stylesheet" href="css/teorias.css">
+<link rel="stylesheet" href="css/gemeos.css">
+<link rel="stylesheet" href="css/faccoes.css">
+<link rel="stylesheet" href="css/motioncomic.css">
+<link rel="stylesheet" href="css/speedrun.css">
+</head>
+<body data-tema="noir">
+
+<div class="flash" id="flash"></div>
+<div class="scanlines"></div>
+<div class="particles" id="particles"></div>
+
+<button class="btn-voltar-global" id="btn-voltar-global" onclick="voltarAoMenu()">
+  ← <span data-i18n="comum_voltar">VOLTAR AO MENU</span>
+</button>
+
+<div id="btn-som-global" onclick="ativarAudioIntro(); this.style.display='none'; try{localStorage.setItem('arquivoMorto_somAtivo','true');}catch(e){}">
+  🔊 <span data-i18n="ativar_som">ATIVAR SOM</span>
+</div>
+
+<!-- ============ INTRO ============ -->
+<section class="screen" id="screen-intro">
+  <div class="intro-fundo" id="intro-fundo"></div>
+  <div class="intro-pular" onclick="pularTodaIntro()">
+    <span data-i18n="pular_intro">PULAR INTRO →</span>
+  </div>
+  <div class="intro-container"></div>
+</section>
+
+<!-- ============ HISTÓRIA ============ -->
+<section class="screen" id="screen-historia">
+  <div class="historia-box">
+    <div class="historia-titulo" data-i18n="historia_titulo">O DETETIVE</div>
+    <div class="historia-texto" id="historia-texto"></div>
+    <button class="historia-btn" id="btn-historia-continuar" onclick="finalizarHistoria()">
+      <span data-i18n="btn_comecar_investigacao">COMEÇAR INVESTIGAÇÃO →</span>
+    </button>
+  </div>
+</section>
+
+<!-- ============ LOADING ============ -->
+<section class="screen" id="screen-loading">
+  <div class="loading-titulo">ARQUIVO MORTO</div>
+  <div class="loading-barra"><div class="loading-fill"></div></div>
+  <div class="loading-texto" id="loading-texto" data-i18n="loading_texto">Inicializando sistema...</div>
+</section>
+
+<!-- ============ MENU PRINCIPAL ============ -->
+<section class="screen active" id="screen-menu">
+  <div class="menu-principal">
+    <div class="logo-box">
+      <div class="logo-svg-wrapper">
+        <svg class="logo-svg" viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg" aria-label="ARQUIVO MORTO">
+          <defs>
+            <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#c23b3b"/>
+              <stop offset="50%" stop-color="#e8dcc4"/>
+              <stop offset="100%" stop-color="#c23b3b"/>
+            </linearGradient>
+            <linearGradient id="sangue-drip" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#8b1a1a" stop-opacity="0.95"/>
+              <stop offset="100%" stop-color="#8b1a1a" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="logo-glow">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <filter id="sangue-blur"><feGaussianBlur stdDeviation="0.8"/></filter>
+          </defs>
+          <text x="300" y="20" text-anchor="middle" fill="#8b1a1a" font-family="Courier New, monospace" font-size="14" letter-spacing="8" opacity="0.8">╔══════════════════════════╗</text>
+          <text x="300" y="85" text-anchor="middle" fill="#8b1a1a" font-family="Special Elite, serif" font-size="52" font-weight="bold" letter-spacing="12" opacity="0.4" filter="url(#sangue-blur)">ARQUIVO MORTO</text>
+          <text x="300" y="80" text-anchor="middle" fill="url(#logo-grad)" font-family="Special Elite, serif" font-size="52" font-weight="bold" letter-spacing="12" filter="url(#logo-glow)">ARQUIVO MORTO</text>
+          <g filter="url(#sangue-blur)">
+            <path d="M 130 100 Q 130 120 128 135 Q 130 145 132 135 Q 132 120 132 100 Z" fill="url(#sangue-drip)"><animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/></path>
+            <path d="M 220 100 Q 220 115 218 125 Q 220 132 222 125 Q 222 115 222 100 Z" fill="url(#sangue-drip)"><animate attributeName="opacity" values="1;0.6;1" dur="2.5s" repeatCount="indefinite"/></path>
+            <path d="M 380 100 Q 380 125 378 142 Q 380 152 382 142 Q 382 125 382 100 Z" fill="url(#sangue-drip)"><animate attributeName="opacity" values="0.8;1;0.8" dur="3.5s" repeatCount="indefinite"/></path>
+            <path d="M 470 100 Q 470 118 468 128 Q 470 136 472 128 Q 472 118 472 100 Z" fill="url(#sangue-drip)"><animate attributeName="opacity" values="1;0.7;1" dur="2.8s" repeatCount="indefinite"/></path>
+          </g>
+          <text x="300" y="110" text-anchor="middle" fill="#b8912e" font-family="Courier New, monospace" font-size="11" letter-spacing="6" opacity="0.9">━ DEPARTAMENTO DE CASOS NÃO RESOLVIDOS ━</text>
+          <text x="300" y="140" text-anchor="middle" fill="#8b1a1a" font-family="Courier New, monospace" font-size="14" letter-spacing="8" opacity="0.8">╚══════════════════════════╝</text>
+        </svg>
+      </div>
+      <p class="subtitulo" data-i18n="subtitulo">Um jogo de dedução e mistério</p>
+    </div>
+
+    <nav class="menu-principal-nav">
+      <div class="menu-grupo">
+        <span class="menu-grupo-titulo" data-i18n="grupo_jogar">▸ JOGAR</span>
+        <button class="btn-menu btn-menu-destaque" data-acao="jogar">
+          <span class="btn-icone">▶</span>
+          <span class="btn-texto" data-i18n="btn_jogar">NOVA INVESTIGAÇÃO</span>
+          <span class="btn-desc" data-i18n="desc_jogar">Iniciar do zero</span>
+        </button>
+        <button class="btn-menu" data-acao="continuar" id="btn-continuar" style="display:none">
+          <span class="btn-icone">⏩</span>
+          <span class="btn-texto" data-i18n="btn_continuar">CONTINUAR</span>
+          <span class="btn-desc" data-i18n="desc_continuar">Retomar progresso</span>
+        </button>
+        <button class="btn-menu" data-acao="tutorial">
+          <span class="btn-icone">🎓</span>
+          <span class="btn-texto" data-i18n="btn_tutorial">TUTORIAL INTERATIVO</span>
+          <span class="btn-desc" data-i18n="desc_tutorial">Aprenda a jogar passo a passo</span>
+        </button>
+        <button class="btn-menu" data-acao="caso-dia">
+          <span class="btn-icone">📅</span>
+          <span class="btn-texto" data-i18n="btn_diario">CASO DO DIA</span>
+          <span class="btn-desc" data-i18n="desc_diario">Bônus diário (+200 XP)</span>
+        </button>
+      </div>
+
+      <div class="menu-grupo">
+        <span class="menu-grupo-titulo" data-i18n="grupo_modos">▸ MODOS DE JOGO</span>
+        <button class="btn-menu" data-acao="campanha">
+          <span class="btn-icone">🏰</span>
+          <span class="btn-texto" data-i18n="btn_campanha">CAMPANHA</span>
+          <span class="btn-desc" data-i18n="desc_campanha">10 capítulos · chefões finais</span>
+        </button>
+        <button class="btn-menu" data-acao="contrarrelogio">
+          <span class="btn-icone">⏱️</span>
+          <span class="btn-texto" data-i18n="btn_contra">CONTRARRELÓGIO</span>
+          <span class="btn-desc" data-i18n="desc_contra">60s por caso · pontos x2</span>
+        </button>
+        <button class="btn-menu" data-acao="perfeicao">
+          <span class="btn-icone">🎯</span>
+          <span class="btn-texto" data-i18n="btn_perfeito">MODO PERFEIÇÃO</span>
+          <span class="btn-desc" data-i18n="desc_perfeito">1 vida · pontos x3</span>
+        </button>
+        <!-- ✅ v8.0: SPEEDRUN -->
+        <button class="btn-menu" data-acao="speedrun">
+          <span class="btn-icone">⚡</span>
+          <span class="btn-texto" data-i18n="btn_speedrun">SPEEDRUN</span>
+          <span class="btn-desc" data-i18n="desc_speedrun">180s · 1 caso · ranking</span>
+        </button>
+        <button class="btn-menu btn-menu-perigo" data-acao="hardcore">
+          <span class="btn-icone">💀</span>
+          <span class="btn-texto" data-i18n="btn_hardcore">MODO HARDCORE</span>
+          <span class="btn-desc" data-i18n="desc_hardcore">1 vida · sem volta</span>
+        </button>
+      </div>
+
+      <div class="menu-grupo">
+        <span class="menu-grupo-titulo" data-i18n="grupo_explorar">▸ EXPLORAR</span>
+        <button class="btn-menu" data-acao="mapa">
+          <span class="btn-icone">🗺️</span>
+          <span class="btn-texto" data-i18n="btn_mapa">MAPA MUNDI</span>
+          <span class="btn-desc" data-i18n="desc_mapa">Casos por cidade</span>
+        </button>
+        <button class="btn-menu" data-acao="gerador">
+          <span class="btn-icone">🤖</span>
+          <span class="btn-texto" data-i18n="btn_gerador">GERADOR DE CASOS</span>
+          <span class="btn-desc" data-i18n="desc_gerador">Casos infinitos com IA</span>
+        </button>
+        <button class="btn-menu" data-acao="historicos">
+          <span class="btn-icone">📜</span>
+          <span class="btn-texto" data-i18n="btn_historicos">CASOS HISTÓRICOS</span>
+          <span class="btn-desc" data-i18n="desc_historicos">Casos baseados em crimes reais</span>
+        </button>
+        <button class="btn-menu" data-acao="npcs">
+          <span class="btn-icone">👥</span>
+          <span class="btn-texto" data-i18n="btn_npcs">GALERIA DE NPCs</span>
+          <span class="btn-desc" data-i18n="desc_npcs">Personagens recorrentes</span>
+        </button>
+        <button class="btn-menu" data-acao="cinematic">
+          <span class="btn-icone">🎬</span>
+          <span class="btn-texto" data-i18n="btn_intro">REVER INTRO</span>
+          <span class="btn-desc" data-i18n="desc_intro">Assistir abertura novamente</span>
+        </button>
+      </div>
+
+      <div class="menu-grupo">
+        <span class="menu-grupo-titulo" data-i18n="grupo_progresso">▸ PROGRESSO</span>
+        <button class="btn-menu" data-acao="missoes">
+          <span class="btn-icone">🎯</span>
+          <span class="btn-texto" data-i18n="btn_missoes">MISSÕES</span>
+          <span class="btn-desc" data-i18n="desc_missoes">Diárias e semanais</span>
+        </button>
+        <button class="btn-menu" data-acao="temporada">
+          <span class="btn-icone">🏆</span>
+          <span class="btn-texto" data-i18n="btn_temporada">TEMPORADAS</span>
+          <span class="btn-desc" data-i18n="desc_temporada">Reset a cada 30 dias</span>
+        </button>
+        <button class="btn-menu" data-acao="reputacao">
+          <span class="btn-icone">⭐</span>
+          <span class="btn-texto" data-i18n="btn_reputacao">REPUTAÇÃO</span>
+          <span class="btn-desc" data-i18n="desc_reputacao">Sua fama como detetive</span>
+        </button>
+        <!-- ✅ v8.0: FACÇÕES -->
+        <button class="btn-menu" data-acao="faccoes">
+          <span class="btn-icone">🏛️</span>
+          <span class="btn-texto" data-i18n="btn_faccoes">FACÇÕES</span>
+          <span class="btn-desc" data-i18n="desc_faccoes">Reputação com grupos</span>
+        </button>
+        <button class="btn-menu" data-acao="ranking">
+          <span class="btn-icone">🌍</span>
+          <span class="btn-texto" data-i18n="btn_ranking">RANKING ONLINE</span>
+          <span class="btn-desc" data-i18n="desc_ranking">Melhores detetives do mundo</span>
+        </button>
+        <button class="btn-menu" data-acao="loja">
+          <span class="btn-icone">🎁</span>
+          <span class="btn-texto" data-i18n="btn_loja">LOOT BOX</span>
+          <span class="btn-desc" data-i18n="desc_loja">Abra caixas de recompensa</span>
+        </button>
+        <button class="btn-menu" data-acao="cartas-hab">
+          <span class="btn-icone">🎴</span>
+          <span class="btn-texto" data-i18n="btn_cartas">CARTAS DE HABILIDADE</span>
+          <span class="btn-desc" data-i18n="desc_cartas">Seu inventário de cartas</span>
+        </button>
+        <button class="btn-menu" data-acao="colecao">
+          <span class="btn-icone">🎴</span>
+          <span class="btn-texto" data-i18n="btn_colecao">COLEÇÃO</span>
+          <span class="btn-desc" data-i18n="desc_colecao">Cartas desbloqueadas</span>
+        </button>
+      </div>
+
+      <div class="menu-grupo">
+        <span class="menu-grupo-titulo" data-i18n="grupo_sistema">▸ SISTEMA</span>
+        <button class="btn-menu" data-acao="temas">
+          <span class="btn-icone">🎨</span>
+          <span class="btn-texto" data-i18n="btn_temas">TEMAS</span>
+          <span class="btn-desc" data-i18n="desc_temas">Personalize o visual</span>
+        </button>
+        <button class="btn-menu" data-acao="estatisticas">
+          <span class="btn-icone">📊</span>
+          <span class="btn-texto" data-i18n="btn_stats">ESTATÍSTICAS</span>
+          <span class="btn-desc" data-i18n="desc_stats">Seu desempenho</span>
+        </button>
+        <button class="btn-menu" data-acao="idioma">
+          <span class="btn-icone">🌎</span>
+          <span class="btn-texto" data-i18n="btn_idioma">IDIOMAS</span>
+          <span class="btn-desc" data-i18n="desc_idioma">PT · EN</span>
+        </button>
+        <button class="btn-menu" data-acao="compartilhar">
+          <span class="btn-icone">📤</span>
+          <span class="btn-texto" data-i18n="btn_compartilhar">COMPARTILHAR</span>
+          <span class="btn-desc" data-i18n="desc_compartilhar">Mostre seu progresso</span>
+        </button>
+        <button class="btn-menu" data-acao="como-jogar">
+          <span class="btn-icone">📖</span>
+          <span class="btn-texto" data-i18n="btn_como">COMO JOGAR</span>
+          <span class="btn-desc" data-i18n="desc_como">Regras e controles</span>
+        </button>
+        <button class="btn-menu" data-acao="autor">
+          <span class="btn-icone">👤</span>
+          <span class="btn-texto" data-i18n="btn_autor">AUTOR</span>
+          <span class="btn-desc" data-i18n="desc_autor">Sobre o criador</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="menu-footer">
+      <button id="btn-idioma" class="btn-idioma" aria-label="Trocar idioma">
+        🌍 <span class="idioma-atual">🇧🇷 PT</span>
+        <span class="idioma-opcoes">PT · EN</span>
+      </button>
+      <p class="versao">v8.0 · 104 casos · <span id="total-conquistas-menu">0</span> <span data-i18n="conquistas_label">conquistas</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOGIN ============ -->
+<section class="screen" id="screen-login">
+  <div class="terminal">
+    <pre class="ascii">
+   ╔══════════════════════════════════╗
+   ║   ACESSO RESTRITO AOS ARQUIVOS   ║
+   ╚══════════════════════════════════╝
+    </pre>
+    <p class="typewriter" id="login-text"></p>
+    <div class="login-box">
+      <label for="codigo" data-i18n="label_codigo">▸ CÓDIGO DE ACESSO:</label>
+      <input type="text" id="codigo" maxlength="4" placeholder="____" autocomplete="off">
+      <button id="btn-entrar" data-i18n="btn_acessar">ACESSAR</button>
+    </div>
+    <p class="dica" data-i18n="dica_login">💡 Dica: o ano em que tudo começou...</p>
+    <p class="erro" id="erro"></p>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<section class="screen" id="screen-app">
+  <header class="topbar">
+    <button class="menu-toggle" id="menu-toggle">☰</button>
+    <h1>🕵️ ARQUIVO MORTO</h1>
+    <div class="hud">
+      <div class="hud-nivel">
+        <span class="hud-nivel-num" id="hud-nivel">1</span>
+        <div class="hud-xp-bar"><div class="hud-xp-fill" id="hud-xp-fill"></div></div>
+      </div>
+      <span class="hud-item" title="Vidas">❤️ <span id="hud-vidas">3</span></span>
+      <span class="hud-item" title="Pontos">⭐ <span id="hud-pontos">0</span></span>
+      <span class="hud-item" title="Moedas">💰 <span id="hud-moedas">0</span></span>
+      <span class="hud-item" title="Casos">📁 <span id="hud-progresso">0/104</span></span>
+      <span class="hud-item hud-combo" id="hud-combo-box" title="Combo">🔥 <span id="hud-combo">x1</span></span>
+      <span class="hud-item hud-timer" id="hud-timer-box" style="display:none" title="Tempo">⏱️ <span id="hud-timer">60</span>s</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <nav class="menu">
+        <div class="menu-secao">
+          <span class="menu-titulo" data-i18n="caso_titulo">📁 CASOS</span>
+          <input type="text" id="busca-caso" placeholder="🔍 Buscar caso..." class="busca-input">
+          <div class="filtros-casos">
+            <button class="filtro-btn ativo" data-filtro="todos" data-i18n="filtro_todos">Todos</button>
+            <button class="filtro-btn" data-filtro="abertos" data-i18n="filtro_abertos">Abertos</button>
+            <button class="filtro-btn" data-filtro="resolvidos" data-i18n="filtro_resolvidos">✓</button>
+            <button class="filtro-btn" data-filtro="historicos" data-i18n="filtro_historicos">📜</button>
+          </div>
+          <ul class="menu-lista" id="menu-casos"></ul>
+        </div>
+        <div class="menu-secao">
+          <span class="menu-titulo" data-i18n="painel_titulo">📊 PAINEL</span>
+          <ul class="menu-lista">
+            <li><a href="#" data-view="status" class="menu-link" data-i18n="painel_status">Status</a></li>
+            <li><a href="#" data-view="conquistas" class="menu-link" data-i18n="painel_conquistas">🏆 Conquistas</a></li>
+            <li><a href="#" data-view="colecao" class="menu-link" data-i18n="painel_colecao">🎴 Coleção</a></li>
+          </ul>
+        </div>
+        <div class="menu-secao">
+          <span class="menu-titulo" data-i18n="sistema_titulo">⚙️ SISTEMA</span>
+          <ul class="menu-lista">
+            <li><a href="#" id="btn-menu-principal" class="menu-link" data-i18n="sistema_menu">🏠 Menu Principal</a></li>
+            <li><a href="#" id="btn-toggle-cutscenes" class="menu-link" data-i18n="sistema_cutscenes">🎬 Alternar Cutscenes</a></li>
+            <li><a href="#" id="btn-iniciar-tutorial" class="menu-link" data-i18n="sistema_tutorial">🎓 Iniciar Tutorial</a></li>
+            <li><a href="#" id="btn-salvar-jogo" class="menu-link" data-i18n="sistema_exportar">💾 Exportar Save</a></li>
+            <li><a href="#" id="btn-carregar-jogo" class="menu-link" data-i18n="sistema_importar">📂 Importar Save</a></li>
+            <li><a href="#" id="btn-reiniciar-menu" class="menu-link perigo" data-i18n="sistema_reiniciar">🗑️ Reiniciar Tudo</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+    <main class="content" id="content"></main>
+  </div>
+</section>
+
+<!-- ============ GAME OVER ============ -->
+<section class="screen" id="screen-gameover">
+  <div class="gameover-box">
+    <h2 data-i18n="gameover_titulo">💀 FIM DE JOGO</h2>
+    <p data-i18n="gameover_msg">Você ficou sem vidas, detetive.</p>
+    <p class="gameover-sub" data-i18n="gameover_sub">O arquivo foi encerrado antes da verdade vir à tona.</p>
+    <div class="gameover-stats" id="gameover-stats"></div>
+    <div class="final-botoes">
+      <button id="btn-gameover-reiniciar" data-i18n="btn_tentar">TENTAR NOVAMENTE</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VITÓRIA ============ -->
+<section class="screen" id="screen-vitoria">
+  <div class="vitoria-box">
+    <h2 data-i18n="vitoria_titulo">🏆 CASO ENCERRADO</h2>
+    <p class="vitoria-sub" data-i18n="vitoria_sub">Você resolveu todos os casos do Arquivo Morto!</p>
+    <div class="relatorio" id="relatorio"></div>
+    <div class="final-botoes">
+      <button id="btn-vitoria-reiniciar" data-i18n="btn_jogar_novamente">JOGAR NOVAMENTE</button>
+      <button class="btn-secundario" data-i18n="btn_compartilhar" onclick="compartilharResultado()">📤 COMPARTILHAR</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RANKING ============ -->
+<section class="screen" id="screen-ranking">
+  <div class="ranking-box">
+    <h2 data-i18n="ranking_titulo">🌍 RANKING ONLINE</h2>
+    <p class="ranking-sub" data-i18n="ranking_sub">Os melhores detetives do mundo</p>
+    <div class="ranking-lista" id="ranking-lista"></div>
+    <div class="final-botoes">
+      <button class="btn-secundario" data-i18n="btn_atualizar" onclick="renderRankingOnline()">🌐 ATUALIZAR ONLINE</button>
+      <button id="btn-ranking-limpar" class="btn-secundario" data-i18n="btn_limpar">🗑️ Limpar Local</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUTOR ============ -->
+<section class="screen" id="screen-autor">
+  <div class="autor-box">
+    <h2 data-i18n="autor_titulo">👤 SOBRE O AUTOR</h2>
+    <div class="autor-conteudo">
+      <div class="autor-avatar">🕵️</div>
+      <div class="autor-info">
+        <h3 data-i18n="autor_nome">Seu Nome Aqui</h3>
+        <p class="autor-cargo" data-i18n="autor_cargo">Criador do ARQUIVO MORTO</p>
+        <p class="autor-bio" data-i18n="autor_bio">Desenvolvedor apaixonado por mistérios, jogos de dedução e histórias de detetive clássicas. Criou o ARQUIVO MORTO como uma homenagem aos grandes enigmas de sala trancada — onde cada detalhe importa e a lógica é a única arma.</p>
+        <div class="autor-links">
+          <a href="#" class="autor-link" data-i18n="autor_email">📧 Email</a>
+          <a href="#" class="autor-link" data-i18n="autor_github">🐙 GitHub</a>
+          <a href="#" class="autor-link" data-i18n="autor_linkedin">💼 LinkedIn</a>
+        </div>
+      </div>
+    </div>
+    <div class="autor-tecnologias">
+      <h4 data-i18n="autor_tecnologias">Tecnologias usadas</h4>
+      <div class="tech-tags">
+        <span class="tech-tag">HTML5</span>
+        <span class="tech-tag">CSS3</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Web Audio API</span>
+        <span class="tech-tag">LocalStorage</span>
+        <span class="tech-tag">PWA</span>
+        <span class="tech-tag" data-i18n="autor_svg">SVG Animado</span>
+        <span class="tech-tag">Firebase</span>
+        <span class="tech-tag">Capacitor</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMO JOGAR ============ -->
+<section class="screen" id="screen-como-jogar">
+  <div class="como-jogar-box">
+    <h2 data-i18n="como_titulo">📖 COMO JOGAR</h2>
+    <div class="como-jogar-conteudo">
+      <div class="regra"><span class="regra-icone">🎯</span><h3 data-i18n="como_objetivo_titulo">Objetivo</h3><p data-i18n="como_objetivo">Resolva os 104 casos investigando evidências e acusando o culpado correto.</p></div>
+      <div class="regra"><span class="regra-icone">🔍</span><h3 data-i18n="como_provas_titulo">Coletar Provas</h3><p data-i18n="como_provas">Colete 3 provas antes de acusar.</p></div>
+      <div class="regra"><span class="regra-icone">💬</span><h3 data-i18n="como_interrogatorio_titulo">Interrogatório</h3><p data-i18n="como_interrogatorio">Escolha perguntas. Suspeitos podem mentir.</p></div>
+      <div class="regra"><span class="regra-icone">⚖️</span><h3 data-i18n="como_julgamento_titulo">Julgamento</h3><p data-i18n="como_julgamento">Defenda sua tese com 3 provas no tribunal.</p></div>
+      <div class="regra"><span class="regra-icone">🎴</span><h3 data-i18n="como_cartas_titulo">Cartas de Habilidade</h3><p data-i18n="como_cartas">Use cartas especiais para facilitar a investigação.</p></div>
+      <div class="regra"><span class="regra-icone">⭐</span><h3 data-i18n="como_reputacao_titulo">Reputação</h3><p data-i18n="como_reputacao">Sua fama cresce com acertos. Suba de nível.</p></div>
+      <div class="regra"><span class="regra-icone">🎓</span><h3 data-i18n="como_tutorial_titulo">Tutorial Interativo</h3><p data-i18n="como_tutorial">Aprenda passo a passo com missões guiadas.</p></div>
+      <div class="regra"><span class="regra-icone">👥</span><h3 data-i18n="como_npcs_titulo">NPCs Persistentes</h3><p data-i18n="como_npcs">Suspeitos recorrentes com arcos narrativos próprios.</p></div>
+      <div class="regra"><span class="regra-icone">📜</span><h3 data-i18n="como_historicos_titulo">Casos Históricos</h3><p data-i18n="como_historicos">Reconstruções de crimes reais com respeito às vítimas.</p></div>
+      <div class="regra"><span class="regra-icone">🤖</span><h3 data-i18n="como_gerador_titulo">Gerador de Casos</h3><p data-i18n="como_gerador">Crie casos infinitos com IA ou algoritmo.</p></div>
+      <div class="regra"><span class="regra-icone">🎨</span><h3 data-i18n="como_ilustracoes_titulo">Ilustrações</h3><p data-i18n="como_ilustracoes">Cada caso tem uma cena do crime ilustrada em SVG animado.</p></div>
+      <div class="regra"><span class="regra-icone">🌗</span><h3 data-i18n="como_dianotte_titulo">Dia/Noite</h3><p data-i18n="como_dianotte">O jogo muda conforme a hora real.</p></div>
+      <div class="regra"><span class="regra-icone">🎬</span><h3 data-i18n="como_cutscenes_titulo">Cutscenes</h3><p data-i18n="como_cutscenes">Animação ao abrir cada caso.</p></div>
+      <div class="regra"><span class="regra-icone">🏆</span><h3 data-i18n="como_temporadas_titulo">Temporadas</h3><p data-i18n="como_temporadas">Compita a cada 30 dias e ganhe prêmios.</p></div>
+      <div class="regra"><span class="regra-icone">🌍</span><h3 data-i18n="como_ranking_titulo">Ranking Online</h3><p data-i18n="como_ranking">Compare sua pontuação com o mundo todo.</p></div>
+      <div class="regra"><span class="regra-icone">🌎</span><h3 data-i18n="como_idiomas_titulo">Bilíngue</h3><p data-i18n="como_idiomas">PT e EN.</p></div>
+      <div class="regra"><span class="regra-icone">🏰</span><h3 data-i18n="como_campanha_titulo">Campanha</h3><p data-i18n="como_campanha">10 capítulos com chefões finais.</p></div>
+      <div class="regra"><span class="regra-icone">💀</span><h3 data-i18n="como_hardcore_titulo">Modo Hardcore</h3><p data-i18n="como_hardcore">1 vida, sem dicas, sem cartas.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEMAS ============ -->
+<section class="screen" id="screen-temas">
+  <div class="temas-box">
+    <h2 data-i18n="btn_temas">🎨 TEMAS</h2>
+    <p class="temas-sub" data-i18n="temas_sub">Desbloqueie temas resolvendo casos</p>
+    <div class="temas-grid" id="temas-grid"></div>
+  </div>
+</section>
+
+<!-- ============ ESTATÍSTICAS ============ -->
+<section class="screen" id="screen-estatisticas">
+  <div class="stats-box">
+    <h2 data-i18n="btn_stats">📊 ESTATÍSTICAS</h2>
+    <div class="stats-grid" id="stats-grid"></div>
+    <div class="graficos" id="graficos"></div>
+  </div>
+</section>
+
+<!-- ============ COLEÇÃO ============ -->
+<section class="screen" id="screen-colecao">
+  <div class="colecao-box">
+    <h2 data-i18n="btn_colecao">🎴 COLEÇÃO DE CARTAS</h2>
+    <p class="colecao-sub" id="colecao-progresso">0/104 cartas</p>
+    <div class="colecao-grid" id="colecao-grid"></div>
+  </div>
+</section>
+
+<!-- ============ CAMPANHA ============ -->
+<section class="screen" id="screen-campanha">
+  <div class="campanha-box">
+    <h2 data-i18n="btn_campanha">🏰 MODO CAMPANHA</h2>
+    <p class="campanha-sub" data-i18n="campanha_sub">10 capítulos · 5 chefões finais</p>
+    <div class="campanha-grid" id="campanha-grid"></div>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section class="screen" id="screen-mapa">
+  <div class="mapa-container">
+    <div class="mapa-header">
+      <div>
+        <div class="mapa-titulo" data-i18n="btn_mapa">🗺️ MAPA MUNDI</div>
+        <div class="mapa-sub" data-i18n="mapa_sub">Investigue casos ao redor do mundo</div>
+      </div>
+      <div class="mapa-stats">
+        <span>📍 <strong id="mapa-stat-total">0</strong> <span data-i18n="mapa_locais">locais</span></span>
+        <span>✓ <strong id="mapa-stat-res">0</strong> <span data-i18n="mapa_resolvidos">resolvidos</span></span>
+      </div>
+    </div>
+    <div class="mapa-viewport" id="mapa-viewport"></div>
+    <div class="mapa-legenda">
+      <div class="legenda-item"><div class="legenda-cor aberto"></div><span data-i18n="mapa_aberto">Caso aberto</span></div>
+      <div class="legenda-item"><div class="legenda-cor resolvido"></div><span data-i18n="mapa_resolvido">Resolvido</span></div>
+      <div class="legenda-item"><div class="legenda-cor chefao"></div><span data-i18n="mapa_chefao">Chefão</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSÕES ============ -->
+<section class="screen" id="screen-missoes">
+  <div class="missoes-container" id="missoes-container"></div>
+</section>
+
+<!-- ============ TEMPORADA ============ -->
+<section class="screen" id="screen-temporada">
+  <div class="missoes-container" id="temporada-container">
+    <div class="missoes-header">
+      <div class="missoes-titulo" data-i18n="temporada_titulo">🏆 TEMPORADA ATUAL</div>
+      <div class="missoes-moeda">📅 <span id="temporada-dias">30</span> <span data-i18n="temporada_dias">dias restantes</span></div>
+    </div>
+    <div class="temporada-info">
+      <div class="temporada-nome"><span data-i18n="temporada_atual">TEMPORADA</span> <span id="temporada-numero">1</span></div>
+      <div class="temporada-dias">
+        <strong id="temporada-pontos">0</strong> <span data-i18n="temporada_pontos">pontos</span><br>
+        <strong id="temporada-casos">0</strong> <span data-i18n="temporada_casos">casos resolvidos</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GERADOR ============ -->
+<section class="screen" id="screen-gerador">
+  <div class="gerador-container">
+    <div class="gerador-header">
+      <div class="gerador-titulo" data-i18n="ger_titulo">🤖 GERADOR DE CASOS</div>
+      <div class="gerador-sub" data-i18n="ger_sub">Crie casos infinitos com IA ou algoritmo</div>
+    </div>
+
+    <div class="gerador-form">
+      <div class="gerador-campo">
+        <span class="gerador-label" data-i18n="ger_tema">📖 TEMA DO CASO:</span>
+        <div class="gerador-opcoes">
+          <div class="gerador-opcao ativo" data-i18n="ger_tema_assassinato" onclick="selecionarOpcao('tema', 'assassinato', this)">🔪 Assassinato</div>
+          <div class="gerador-opcao" data-i18n="ger_tema_roubo" onclick="selecionarOpcao('tema', 'roubo', this)">💎 Roubo</div>
+          <div class="gerador-opcao" data-i18n="ger_tema_desaparecimento" onclick="selecionarOpcao('tema', 'desaparecimento', this)">🔍 Desaparecimento</div>
+          <div class="gerador-opcao" data-i18n="ger_tema_fraude" onclick="selecionarOpcao('tema', 'fraude', this)">📜 Fraude</div>
+        </div>
+      </div>
+
+      <div class="gerador-campo">
+        <span class="gerador-label" data-i18n="ger_dificuldade">⭐ DIFICULDADE:</span>
+        <div class="gerador-opcoes">
+          <div class="gerador-opcao" data-i18n="ger_facil" onclick="selecionarOpcao('dificuldade', 'facil', this)">Fácil</div>
+          <div class="gerador-opcao ativo" data-i18n="ger_medio" onclick="selecionarOpcao('dificuldade', 'medio', this)">Médio</div>
+          <div class="gerador-opcao" data-i18n="ger_dificil" onclick="selecionarOpcao('dificuldade', 'dificil', this)">Difícil</div>
+          <div class="gerador-opcao" data-i18n="ger_pesadelo" onclick="selecionarOpcao('dificuldade', 'pesadelo', this)">💀 Pesadelo</div>
+        </div>
+      </div>
+
+      <div class="gerador-campo">
+        <span class="gerador-label" data-i18n="ger_suspeitos">👥 NÚMERO DE SUSPEITOS:</span>
+        <div class="gerador-opcoes">
+          <div class="gerador-opcao" data-i18n="ger_suspeitos_3" onclick="selecionarOpcao('numSuspeitos', 3, this)">3 Suspeitos</div>
+          <div class="gerador-opcao ativo" data-i18n="ger_suspeitos_4" onclick="selecionarOpcao('numSuspeitos', 4, this)">4 Suspeitos</div>
+          <div class="gerador-opcao" data-i18n="ger_suspeitos_5" onclick="selecionarOpcao('numSuspeitos', 5, this)">5 Suspeitos</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gerador-acoes">
+      <button class="btn-gerar btn-gerar-ia" onclick="acionarGeracao('ia')">
+        <span class="btn-titulo" data-i18n="ger_gerar_ia">🤖 GERAR COM IA</span>
+        <span class="btn-desc" data-i18n="ger_gerar_ia_desc">Casos únicos e criativos (grátis)</span>
+      </button>
+      <button class="btn-gerar btn-gerar-procedural" onclick="acionarGeracao('procedural')">
+        <span class="btn-titulo" data-i18n="ger_gerar_aleatorio">🎲 GERAR ALEATÓRIO</span>
+        <span class="btn-desc" data-i18n="ger_gerar_aleatorio_desc">Instantâneo e 100% offline</span>
+      </button>
+    </div>
+
+    <div class="gerador-loading" id="gerador-loading">
+      <div class="loading-robo">🤖</div>
+      <div class="loading-titulo-gerador" data-i18n="ger_criando">CRIANDO CASO...</div>
+      <div class="loading-barra-gerador"><div class="loading-fill-gerador"></div></div>
+      <div class="loading-texto-gerador" data-i18n="ger_iniciando">Iniciando...</div>
+    </div>
+
+    <div class="gerador-preview" id="gerador-preview"></div>
+
+    <div class="gerador-historico">
+      <div class="historico-titulo">
+        <span data-i18n="ger_historico">📚 CASOS GERADOS RECENTEMENTE</span>
+        <span style="font-size:0.65rem;opacity:0.4" data-i18n="ger_historico_sub">Clique para rever</span>
+      </div>
+      <div class="historico-lista" id="gerador-historico-lista"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NPCs ============ -->
+<section class="screen" id="screen-npcs">
+  <div class="missoes-container">
+    <div class="missoes-header">
+      <div class="missoes-titulo" data-i18n="npcs_titulo">👥 GALERIA DE NPCs</div>
+      <div class="missoes-moeda">👤 <span id="npcs-encontrados">0</span>/5 <span data-i18n="npcs_encontrados">encontrados</span></div>
+    </div>
+    <div id="npcs-lista"></div>
+  </div>
+</section>
+
+<!-- ============ HISTÓRICOS ============ -->
+<section class="screen" id="screen-historicos">
+  <div class="missoes-container">
+    <div class="missoes-header">
+      <div class="missoes-titulo" data-i18n="hist_titulo">📜 CASOS HISTÓRICOS</div>
+      <div class="missoes-moeda">📖 <span id="historicos-resolvidos">0</span>/3 <span data-i18n="hist_resolvidos">resolvidos</span></div>
+    </div>
+    <div class="historicos-aviso">
+      <strong data-i18n="hist_aviso">⚠️ Aviso Ético:</strong>
+      <span data-i18n="hist_aviso_texto">Estes casos são reconstruções históricas com fins educativos. As vítimas eram pessoas reais e merecem respeito. Não há glorificação do crime.</span>
+    </div>
+    <div id="historicos-lista"></div>
+  </div>
+</section>
+
+<!-- ============ ✅ v8.0: TELA DE FACÇÕES ============ -->
+<section class="screen" id="screen-faccoes">
+  <!-- Conteúdo renderizado via JS -->
+</section>
+
+<!-- ============ MODAIS ============ -->
+<div class="modal-overlay" id="modal-global" style="display:none">
+  <div class="modal-box">
+    <h3 id="modal-titulo"></h3>
+    <div id="modal-conteudo"></div>
+    <button class="modal-fechar" id="modal-fechar" data-i18n="comum_fechar">FECHAR</button>
+  </div>
+</div>
+
+<div class="conquista-popup" id="conquista-popup" role="status" aria-live="polite">
+  <div class="conquista-popup-icone" id="conquista-popup-icone">🏆</div>
+  <div class="conquista-popup-info">
+    <span class="conquista-popup-label" data-i18n="conquista_desbloqueada">CONQUISTA DESBLOQUEADA</span>
+    <span class="conquista-popup-nome" id="conquista-popup-nome"></span>
+  </div>
+</div>
+
+<div class="levelup-popup" id="levelup-popup" role="status" aria-live="polite">
+  <div class="levelup-content">
+    <span class="levelup-icone">⬆️</span>
+    <span class="levelup-label" data-i18n="levelup_label">NÍVEL AUMENTOU</span>
+    <span class="levelup-num" id="levelup-num">2</span>
+  </div>
+</div>
+
+<div class="cena-transicao" id="cena-transicao"></div>
+<button class="btn-instalar-pwa" id="btn-instalar-pwa" onclick="instalarPWA()">📱 INSTALAR APP</button>
+
+<!-- ============ SCRIPTS ============ -->
+<script src="js/casos.js"></script>
+<script src="js/traducoes.js"></script>
+<script src="js/ilustracoes.js"></script>
+
+<script src="js/npcs.js"></script>
+<script src="js/capitulos.js"></script>
+<script src="js/mapa.js"></script>
+<script src="js/historicos.js"></script>
+<script src="js/tutorial.js"></script>
+
+<script src="js/dianotte.js"></script>
+<script src="js/cutscenes.js"></script>
+
+<script src="js/reputacao.js"></script>
+<script src="js/cartas.js"></script>
+<script src="js/julgamento.js"></script>
+<script src="js/hardcore.js"></script>
+
+<script src="js/provas.js"></script>
+<script src="js/interrogatorio.js"></script>
+
+<script src="js/extras.js"></script>
+<script src="js/gerador.js"></script>
+<script src="js/cinematics.js"></script>
+
+<script src="js/online.js"></script>
+<script src="js/temporadas.js"></script>
+<script src="js/notificacoes.js"></script>
+
+<!-- ✅ v8.0: 5 novas features -->
+<script src="js/teorias.js"></script>
+<script src="js/gemeos.js"></script>
+<script src="js/faccoes.js"></script>
+<script src="js/motioncomic.js"></script>
+<script src="js/speedrun.js"></script>
+
+<script src="js/script.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    console.log('🚀 Iniciando módulos v8.0...');
+    try {
+      // Sistemas base
+      if (window.iniciarNPCs) iniciarNPCs();
+      if (window.iniciarCapitulosV6) iniciarCapitulosV6();
+      if (window.iniciarHistoricos) iniciarHistoricos();
+      if (window.iniciarDiaNoite) iniciarDiaNoite();
+      if (window.iniciarCutscenes) iniciarCutscenes();
+      if (window.iniciarReputacao) iniciarReputacao();
+      if (window.iniciarCartas) iniciarCartas();
+      if (window.iniciarSistemaProvas) iniciarSistemaProvas();
+      if (window.iniciarExtras) iniciarExtras();
+      if (window.iniciarOnline) iniciarOnline();
+      if (window.iniciarTemporadas) iniciarTemporadas();
+      if (window.iniciarIdiomas) iniciarIdiomas();
+      if (window.iniciarNotificacoes) iniciarNotificacoes();
+      if (window.verificarTutorial) verificarTutorial();
+
+      // ✅ v8.0: 5 novas features
+      if (window.iniciarTeorias) iniciarTeorias();
+      if (window.iniciarGemeos) iniciarGemeos();
+      if (window.iniciarFaccoes) iniciarFaccoes();
+      if (window.iniciarMotionComic) iniciarMotionComic();
+      if (window.iniciarSpeedrunSistema) iniciarSpeedrunSistema();
+
+      // Traduções
+      if (window.aplicarTraducoes) aplicarTraducoes();
+
+      console.log('✓ Módulos v8.0 inicializados');
+    } catch(e) { console.error('❌ Erro:', e); }
+  }, 300);
+});
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js')
+      .then(function(reg) { console.log('✓ SW registrado:', reg.scope); })
+      .catch(function(err) { console.warn('SW falhou:', err); });
+  });
+}
+</script>
+</body>
+</html>
